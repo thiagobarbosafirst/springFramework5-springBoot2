@@ -6,4 +6,6 @@ import com.example.projetospring.entity.Usuario;
 
 public interface UserRepository extends JpaRepository<Usuario, Long>{
 	
+	User findByEmail(String email);
+	
 }
