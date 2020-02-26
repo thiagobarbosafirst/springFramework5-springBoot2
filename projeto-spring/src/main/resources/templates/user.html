@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Teste Thymelife</title>
+</head>
+
+<body>
+	<table border="1">
+		<tr>
+			<th>Nome</th>
+			<th>Email</th>
+		</tr>
+		<tr th:each="user : ${usersList}">
+			<td th:text="${user.name}" > </td>
+			<td th:text="${user.email}"></td>
+		</tr>
+	</table>
+</body>
+</html>

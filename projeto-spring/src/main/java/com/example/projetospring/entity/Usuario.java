@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class User {
+public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,6 +18,13 @@ public class User {
 	private String name;
 	
 	private String email;
+	
+	public Usuario() {}
+	
+	public Usuario(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
 	
 	@ManyToMany
 	private Set<Role> roles;
