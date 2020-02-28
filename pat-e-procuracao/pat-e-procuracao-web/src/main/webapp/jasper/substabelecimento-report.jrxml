@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-07-17T10:14:30 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="procuracao-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0181f6b-721d-480e-9428-c40688b385fd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="header.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="footer.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="outorgantes" class="java.lang.String"/>
+	<parameter name="procuradores" class="java.lang.String"/>
+	<parameter name="processo" class="java.lang.String"/>
+	<parameter name="reservaPoderes" class="java.lang.String"/>
+	<parameter name="prazoValidade" class="java.lang.String"/>
+	<parameter name="dataAtual" class="java.lang.String"/>
+	<parameter name="sujeitosPassivos" class="java.lang.String"/>
+	<parameter name="dataLimite" class="java.lang.String"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="80" uuid="2a3b84b4-703d-47a6-b5a7-d90630d7b3dc"/>
+				<subreportParameter name="logo.sefaz">
+					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo">
+					<subreportParameterExpression><![CDATA[$P{titulo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{header.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="47" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="230">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="10" width="524" height="180" uuid="deb70550-a6e2-45b7-9d1c-b5b79b805f12"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Por este instrumento particular de substabelecimento, " + $P{outorgantes} + ", substabelece" + $P{reservaPoderes} + ", a " +  $P{procuradores} +
+" os poderes que foram outorgados em procuração por " + $P{sujeitosPassivos} + " para representa-los no Contencioso Administrativo Tributário do Estado de Goiás, especialmente para defender os interesses do(s) outorgante no Processo Administrativo Tributário nº " + $P{processo} + 
+" podendo apresentar requerimentos, defesas, impugnações, recursos e praticar atos em geral. " 
++ $P{prazoValidade} + $P{dataLimite}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="20" y="200" width="360" height="21" uuid="810fd08d-0da2-4896-80e1-bdf4485ab802"/>
+				<textFieldExpression><![CDATA[$P{dataAtual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="82">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="0" y="-28" width="553" height="110" uuid="bc6b2b10-aeac-4041-a837-08c413941064"/>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{footer.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

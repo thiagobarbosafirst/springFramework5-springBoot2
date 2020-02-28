@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Revogação Presencial Pesquisa</title>
+	<!-- Datatables -->
+    <link th:href="@{/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet"> 	
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Consultar Procuração para Revogação</h2>						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<!-- Messages -->
+						<sefazgo:messages/>												
+						<div class="col-md-12 col-sm-12 col-xs-12">																			
+							
+							<div class="alert alert-danger" id="container-mensagens" style="display: none">
+	               				<div id="mensagem-container">	
+	               				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>			               						               					
+								  <span class="mensagem-texto"></span>
+	               				</div> 											
+							</div>
+																						
+							<pat:process-search action="/revogacaoPresencial/search" options="cpf,cnpj" />
+							<!-- Retornado quando CPF/CNPJ inexistente -->
+							<div class="well col-md-12 col-sm-12 col-xs-12" th:if="${idSujeitoPassivo == false}">
+								<i class="fa fa-search fa-3x mensagem-icone"></i> 
+								<div class="mensagem-icone-texto">
+									<h2>Não encontramos registros no nosso banco de dados com esse CPF/CNPJ.</h2>
+								</div>
+							</div>
+							
+							<div th:if="${not #lists.isEmpty(listaProcuracao)}">
+								<table id="datatable-responsive-list" class="table table-striped table-bordered dt-responsive nowrap jambo_table" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th class="text-center">Detalhes</th>
+											<th>Processo</th>
+											<th>Data da Procuração</th>
+											<th>Tipo Poder</th>
+											<th>Data Validade</th>
+											<th>Status Procuração</th>
+											<th class="text-center">Ações Procuração</th>
+											<th>Revogar</th>
+										</tr>
+									</thead>
+									<tbody th:each="procuracao : ${listaProcuracao}">
+										<tr class="collapse-toggle">
+											<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+											<td th:text="${procuracao.numeroPAT}"></td>
+											<td th:text="${procuracao.dataEmissaoProcuracao}"></td>
+											<td th:text="${procuracao.descricaoPoderProcuracao}"></td>
+											<td th:text="${procuracao.dataValidadeProcuracao}"></td>
+											<td th:text="${procuracao.descricaoStatusProcuracao}"></td>
+											<td>
+												<div class="text-center">
+													<a title="Download Procuração"
+														th:href="@{/procuracao/download/__${procuracao.idProcuracao}__}" style="font-size: 20px; padding-right: 15px;"> <i class="fa fa-download"></i>
+													</a>
+												</div>
+											</td>
+											<td>
+												<div class="text-center">
+													<div th:if="${procuracao.statusProcuracao.equals('1')}">
+														<a title="Revogar Procuração"
+															th:href="@{/revogacaoPresencial/__${procuracao.idProcuracao}__/__${idSujeitoPassivo}__}" style="font-size: 20px; padding-right: 15px;"> <i class="glyphicon glyphicon-open-file"></i>
+														</a>
+													</div>	
+												</div>
+											</td>
+										<tr class="collapse">
+											<td colspan="8">
+												<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+													<div class="x_title">
+														<h2>Sujeitos Passivos (Outorgantes) e Procuradores</h2>
+														<div class="clearfix"></div>
+													</div>
+													<div class="x_content">
+														<table
+															class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo">
+															<thead>
+																<tr>																	
+																	<th>CNPJ/CPF Sujeito Passivo</th>
+																	<th>Sujeito Passivo</th>
+																	<th>CPF Procurador</th>
+																	<th>Procurador</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="sujeitoPassivo : ${procuracao.movimentacoesDto} ">																	
+																	<div th:if="${pessoaJuridica}">
+																		<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																	</div>
+																	<div th:if="${pessoaFisica}">
+																		<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																	</div>
+																	<div th:if="${pessoaJuridica}">
+																		<td th:text="${sujeitoPassivo.nomeSujeito}"></td>
+																	</div>																		
+																	<div th:if="${pessoaFisica}">
+																		<td th:text="${sujeitoPassivo.nomeSujeito}"></td>
+																	</div>
+																	<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeitoPassivo.cpfProcurador}"></td>
+																	<td th:text="${sujeitoPassivo.nomeProcurador}"></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</td>
+										</tr>
+										</tr>
+									</tbody>
+								</table>
+							</div><!-- end if -->																																																																																				
+						</div><!-- end -->
+					</div><!-- end x_content-->	
+				</div><!-- end x_panel-->
+			</div><!-- end col-->
+		</div><!-- end row-->
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">	
+		<script th:src="@{/resources/js/procuracao.js}"></script>	 
+	</th:block>
+
+</body>
+</html>

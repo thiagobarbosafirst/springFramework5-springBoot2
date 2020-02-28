@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Lista de Renúncias</title>
+	<!-- Datatables -->
+    <link th:href="@{/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+    
+    <!-- Include SmartWizard CSS -->
+    <link th:href="@{/resources/css/smartwizard/smart_wizard.css}" rel="stylesheet" >
+    
+    <!-- Optional SmartWizard theme -->
+    <link th:href="@{/resources/css/smartwizard/smart_wizard_theme_arrows.css}" rel="stylesheet">
+    
+    <link th:href="@{/resources/css/procuracao.css}" rel="stylesheet">
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Lista de Renúncias</h2>						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+											
+						<!-- Messages -->
+						<sefazgo:messages/>
+						
+						<div class="well col-md-12 col-sm-12 col-xs-12" th:if="${page.size() <= 0}">
+							<i class="fa fa-search fa-3x mensagem-icone"></i> 
+							<div class="mensagem-icone-texto">
+								<h3>Não há renúncias cadastradas até o momento.</h3>
+								<a class="btn-xs btn btn-primary" th:href="@{/../procuracao/procuracao/listProcurador}"><i class="fa fa-angle-double-right"></i> Visualizar Procurações</a>
+							</div>
+						</div>
+					
+						<!-- Content -->
+						<div class="well" th:if="${page.size() > 0}">
+							<table id="datatable-responsive-list" class="table table-striped table-bordered dt-responsive nowrap jambo_table table-agrupada-pai" cellspacing="0">						
+								<thead>
+	                                <tr>
+	                                	<th class="text-center">Detalhes</th>	
+	                                	<th>Processo</th>   	 
+	                                	<th>Data da Renúncia</th>  	                                   	
+										<th>Status da Renúncia</th>	
+										<th>Tipo de Renúncia</th>									  
+										<th class="text-center">Documentos</th>																					                               
+	                                </tr>
+								</thead>
+								<tbody th:each="renuncia : ${page}">
+									<tr class="collapse-toggle">	
+										<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+										
+										<td th:text="${renuncia.numeroPAT}"></td> 
+																								
+										<td th:text="${#dates.format(renuncia.dataRenuncia, 'dd/MM/yyyy')}" th:if="${renuncia.dataRenuncia != null}"></td>
+										<td class="texto-negrito" th:if="${renuncia.dataRenuncia == null}">Não Renunciado</td>
+																				
+										<td th:if="${renuncia.renunciaPendenteAssinaturaDigital == 'S'}">Pendente Documento de Assinatura</td>										
+										<td th:if="${renuncia.renunciaPendenteAssinaturaDigital == 'N'}">Concluída</td>
+										
+										<td th:if="${renuncia.indiRenunciaPresencial == 'S'}">Renúncia Presencial</td>										
+										<td th:if="${renuncia.indiRenunciaPresencial == 'N'}">Renúncia Eletrônica</td>
+																				
+										<td th:if="${renuncia.renunciaPendenteAssinaturaDigital == 'S'}" 
+												class="text-center">										
+											<a th:id="pat-wizard-documento" class="js-pat-btn-popup" data-toggle="modal" title="Assinar renúncia"  
+												style="font-size:20px; padding-right: 15px;cursor: pointer"
+												th:data-id-procuracao="${renuncia.idRenuncia}"												
+												th:data-verification-uri="@{/renuncia/verifyStep/}" 
+												th:data-download-uri="@{/renuncia/download/}"
+												th:data-upload-uri="@{/renuncia/upload/}"
+												data-target="#modalUploadConfirmation" > 
+												<i class="fa fa-pencil"></i>
+											</a>
+										</td> 
+										
+										<td th:if="${renuncia.renunciaPendenteAssinaturaDigital == 'N'}" class="text-center">
+											<a class="js-btn-modal-download" title="Visualizar Documentos Relacionados" style="font-size:20px; padding-right: 15px;" 
+												th:data-id-referencia="${renuncia.idRenuncia}" 
+												th:data-codigo-modulo="${T(br.gov.go.sefaz.pat.procuracao.constants.TipoAgrupadorMovimentacaoMapper).RENUNCIA}" 
+												th:data-numero-processo="${renuncia.numeroPAT}">
+												<i class="fa fa-download" ></i>
+											</a>																					
+										</td>
+																															
+										<tr class="collapse">		
+											<td colspan="8">											
+													<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+														<div class="x_title">
+															<h2>Sujeitos Passivos (Outorgantes)</h2>
+															<div class="clearfix"></div>
+														</div>
+														<div class="x_content">
+					
+															<table class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo">
+																<thead>
+																	<tr>																		
+																		<th>CNPJ/CPF Sujeito Passivo</th>
+																		<th>Nome Sujeito Passivo</th>
+																		<th>Tipo Sujeito Passivo</th>																		
+																		<th>Emissão da Procuração</th>
+																		<th>Validade da Procuração</th>																												
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="sujeito: ${renuncia.movimentacoesDto}">
+																																																							  			
+																		<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeito.cnpjCpf}" th:if="${sujeito.cnpjCpf.length() >= 14}"></td>
+																		<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeito.cnpjCpf}" th:if="${sujeito.cnpjCpf.length() < 14}"></td>	
+																																
+																		<td th:text="${sujeito.nomeSujeito}"></td>
+																		<td th:text="${T(br.gov.go.sefaz.pat.enumerator.EnumTipoSujeitoPassivo).parse(sujeito.tipoSujeito).descricao}"></td>																
+																																				
+																		<td th:text="${#dates.format(sujeito.dataEmissaoProcuracao, 'dd/MM/yyyy')}"></td>
+																		<td th:text="${#dates.format(sujeito.dataValidadeProcuracao, 'dd/MM/yyyy')}"></td>																																	
+																	</tr>
+																</tbody>
+					
+															</table>
+														</div>
+													</div>
+												</td>											
+											</tr>									
+									</tr>								
+								</tbody> 
+							</table>
+							
+							<!-- Pagination Bar -->
+							<!-- <sefazgo:pagination page="${page}"/> -->
+							
+<!-- 							<div class="x_panel">					
+								<div class="btn-toolbar pull-right">
+									<a th:href="@{/../procuracao/procuracao/listProcurador}" class="btn btn-orange">Nova Renúncia</a>							
+								</div>
+							</div> -->
+												
+						</div>
+												
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Modal (Modal Upload)-->
+		<div th:replace="@{layout/modal/modal-upload} :: modal"></div>
+		
+		<!-- Modal (Modal Download)-->		
+		<div th:replace="@{layout/components/modal-download} :: modalDownload"></div>
+		
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+			
+		<script th:src="@{/resources/js/procuracao.js}"></script>	 
+	    <script th:src="@{/resources/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	    
+	    <!-- JS Credenciamento -->
+    	<script th:src="@{/resources/js/pat.upload.js}"></script>
+	    <!-- File Upload -->
+    	<script th:src="@{/resources/vendors/bootstrap-filestyle/js/file-upload.js}"></script>
+    	
+    	<!-- Include SmartWizard JavaScript source -->
+    	<script th:src="@{/resources/js/smartwizard/jquery.smartWizard.js}"></script>
+    	
+		<!-- Include PATWizard JavaScript source -->
+    	<script th:src="@{/resources/js/pat.procuracao.wizard.js}"></script>
+    	<script th:src="@{/resources/js/smartwizard/jquery.pat.wizard.js}"></script>    		
+	
+	</th:block>
+
+</body>
+</html>

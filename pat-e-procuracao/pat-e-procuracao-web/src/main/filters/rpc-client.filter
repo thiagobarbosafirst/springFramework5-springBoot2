@@ -1,0 +1,17 @@
+#Propriedades de comunicação rpc para ambiente 'desenv'
+rpc.client.brokerid.desenv = pfaz.intra.goias.gov.br:18026
+rpc.client.server.desenv = RPC/SRVDESV/CALLNAT
+rpc.client.lib.desenv = FAZDFGI
+
+#Propriedades de comunicação rpc para ambiente 'homolog'
+rpc.client.brokerid.homolog = pfaz.intra.goias.gov.br:18026
+rpc.client.server.homolog = RPC/SRVHMP/CALLNAT
+rpc.client.lib.homolog = FAZPFGI
+
+#Propriedades de comunicação rpc para ambiente 'prod'
+rpc.client.brokerid.prod = pfaz.intra.goias.gov.br:18024
+rpc.client.server.prod = RPC/JAVPROD/CALLNAT
+rpc.client.lib.prod = FAZPFGI
+rpc.client.waittime.prod = 60S
+rpc.client.poolsize.prod = 640
+rpc.client.pooltimeout.prod = 60

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	xmlns:th="http://www.thymeleaf.org">
+<body> 
+	<section th:fragment="formulario-procurador-list">
+	
+			<div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Lista de Procuradores</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                <div class="x_content">
+	
+					<div class="well" style="overflow: auto">
+					
+						<div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback" >
+										<table class="table table-striped table-bordered dt-responsive nowrap jambo_table" cellspacing="0" width="100%" id="tableProcuradores">											
+								<thead>
+									<tr>
+										<th>CPF Procurador</th>
+										<th>Nome</th>
+										<th>Endereço</th>
+										<th>OAB</th>	
+										<th class="all table-col-buttons"></th>
+																								
+									</tr>
+								</thead>		  		
+									<tr th:each="procurador, status: ${procuracaoDto.procuradores}" class="procuradores" id="itemProcurador" >
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idProcurador}"  class="idProcuradorProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].cpf}" value="${procuradorLista.cpf}" class="cpfProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idPessoa}" class="idPessoaProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].nome}" class="nomeProcuradorLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].enderecoFormatado}" class="enderecoFormatadoLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].codgLogradouro}" class="codgLogradouroLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].numero}" class="numeroLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].quadra}" class="quadraLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].lote}" class="loteLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].complemento}" class="complementoLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idEscritorio}" class="idEscritorioProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idEnderecoEscritorio}" class="idEnderecoEscritorioProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].numeroCnpjEscritorio}" class="numeroCnpjEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].nomeFantasiaEscritorio}" class="nomeFantasiaEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].nomeEmpresarialEscritorio}" class="nomeEmpresarialEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].regimeFiscal}" class="regimeFiscalLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].enderecoEscritorioFormatado}" class="enderecoEscritorioFormatadoLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].codgLogradouroEscritorio}" class="codgLogradouroEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].numeroEscritorio}" class="numeroEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].quadraEscritorio}" class="quadraEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].loteEscritorio}" class="loteEscritorioLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].complementoEscritorio}" class="complementoEscritorioLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].numeroOAB}" class="numeroOABProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].ufAdvogado}" class="ufAdvogadoProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idDocumento}" class="idDocumentoProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].tipoDocumento}" class="tipoDocumentoProcuradorLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idEmail}" class="idEmailProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].emailPessoa}" class="emailPessoaProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].tipoEmail}" class="tipoEmailProcuradorLista procuradorListaPresencial"/>
+										
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].idTelefone}" class="idTelefoneProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].telefone}" class="telefoneProcuradorLista procuradorListaPresencial"/>
+										<input type="hidden" th:field="${procuracaoDto.procuradores[__${status.index}__].tipoTelefone}" class="tipoTelefoneProcuradorLista procuradorListaPresencial"/>
+										
+										
+											<td class="js-sefazgo-mask" th:text="${procurador.cpf}"></td> 
+								  			<td th:text="${procurador.nome}" />
+											<td th:text="${procurador.enderecoFormatado}" /> 
+											<td th:text="${procurador.ufAdvogado + ' - ' + procurador.numeroOAB}" />
+											<td class="table-col-buttons" >
+													<button type="button" class="btn btn-default btn-xs" title="Delete" id="btn-remover-procurador"> <div class="glyphicon glyphicon-trash"></div></button>
+											</td>
+									</tr>																													
+								</tbody>
+						</table>
+						</div>
+						
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+			
+	</section>
+	
+	
+</body>

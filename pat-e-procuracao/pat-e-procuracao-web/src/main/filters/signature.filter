@@ -1,0 +1,6 @@
+#Propriedades de inserção de pessoa para ambiente 'desenv'
+type.signature.desenv = BASIC
+
+#Propriedades de inserção de pessoa para ambiente 'homolog'
+#type.signature.homolog = DEMOISELLE
+type.signature.homolog = BASIC

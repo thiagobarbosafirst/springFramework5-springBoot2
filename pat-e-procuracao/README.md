@@ -1,0 +1,2 @@
+# Processo Administrativo Tributário Eletrônico - Módulo de Procuração
+> Projeto web responsável pela outorga de procuração do sujeito passivo em favor de um representante legal para atuar no contencioso fiscal

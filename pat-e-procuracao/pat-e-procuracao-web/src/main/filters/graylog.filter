@@ -1,0 +1,4 @@
+#logs.graylog.facility.local = wllocalsefaz
+logs.graylog.facility.desenv = wldessefaz
+logs.graylog.facility.homolog = wlhomsefaz
+logs.graylog.facility.prod = wlprodsefaz

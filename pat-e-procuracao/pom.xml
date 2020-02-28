@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.gov.go.sefaz</groupId>
+	<artifactId>pat-e-procuracao</artifactId>
+	<version>1.0.0.RC1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>pat-e-procuracao-domain</module>
+		<module>pat-e-procuracao-ear</module>
+		<module>pat-e-procuracao-web</module>
+		<module>pat-e-procuracao-security</module>
+	</modules>
+	
+	<name>PAT-e Procuracao [Parent]</name>
+	<description>Processo Administrativo Tributário Eletrônico</description>
+	<organization>
+		<name>Secretaria da Fazenda do Estado de Goiás</name>
+		<url>http://www.sefaz.go.gov.br</url>
+	</organization>
+	
+	<properties>
+		<!-- Versão do compilador Java -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<!-- Encoding padrão para o Maven Compiler Plugin -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <br.gov.go.sefaz.javaee.version>1.7.0.THEME.ECONOM</br.gov.go.sefaz.javaee.version>
+		
+		<context-web>/pat/procuracao</context-web>
+	</properties>
+	
+	<distributionManagement>
+		<repository>
+			<id>deployments-releases</id>
+			<url>https://nexus.sefaz.go.gov.br/content/repositories/deployments-releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>deployments-snapshots</id>
+			<url>https://nexus.sefaz.go.gov.br/content/repositories/deployments-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

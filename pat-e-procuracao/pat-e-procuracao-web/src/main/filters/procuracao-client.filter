@@ -1,0 +1,17 @@
+#Propriedades de inserção de pessoa para ambiente 'desenv'
+pessoaIdentificacao.service.endpointUrl.desenv = http\://wldesfazsoa02.intra.goias.gov.br:10130/rest/seguranca/identificacao/pessoa/v1r0/pessoaIdentificada
+pessoa.service.endpointUrl.desenv = https\://wldesapp01.sefaz.go.gov.br:7003/cad-service/v1/pessoafisica
+pessoaJuridica.service.endpointUrl.desenv = https\://wldesapp01.sefaz.go.gov.br:7003/cad-service/v1/pessoajuridica
+empresa.service.endpointUrl.desenv = https\://wldesapp01.sefaz.go.gov.br:7003/cad-service/v1/empresa
+resource.application.token.url.desenv = https\://portaldesenv.sefaz.go.gov.br/portalsefaz-service/v1/auth/sistema/jwt
+procuracao.client.password.desenv = I62ugR+5TBcI+KAI1dj4suD22N9Dkizd1WAJ4/puv28pnuvoe46NM9FmWF5v0fdaIbS6xu8T4kR9FjuMEr/HiNKILnhg64GeEb5C7rYE58E+6Lv3TnzFB1vNZMFN+NoGCza83uZnMdq4S/psgdD+hIGh/nWZ9+tAWy6dnyWaY4VsS0F+8/WuJOh7Ar8yH/TxiopsjCyqb1zYucefoPwk+3s5JweNgl/2bkw+smS3YHtp9adL1jPe4Wg4URgJMw5G+MTnsvyVjh0qjsUG9oGbTVHPKXauLxYcd8YpWUhwptd/fYZQUFJYYP/rA+IOAJAaWNi5Ip1jicat1SF/CUD0gw==
+procuracao.client.resource.application.public.key.desenv = /br/gov/go/sefaz/pat/admin/portalsefaz-public-key-desenv.der
+
+#Propriedades de inserção de pessoa para ambiente 'homolog'
+pessoaIdentificacao.service.endpointUrl.homolog = http\://wlhomfazsoa02.intra.goias.gov.br:10130/rest/seguranca/identificacao/pessoa/v1r0/pessoaIdentificada
+pessoa.service.endpointUrl.homolog = https\://wlhomapp01.sefaz.go.gov.br:7003/cad-service/v1/pessoafisica
+pessoaJuridica.service.endpointUrl.homolog = https\://wlhomapp01.sefaz.go.gov.br:7003/cad-service/v1/pessoajuridica
+empresa.service.endpointUrl.homolog = https\://sistemashomolog.sefaz.go.gov.br/cad-service/v1/empresa
+resource.application.token.url.homolog = https\://sistemashomolog.sefaz.go.gov.br/portalsefaz-service/v1/auth/sistema/jwt
+procuracao.client.password.homolog = Kahnb+p+/aCsO//c66D62c2BG1GsuwmK4gUSjGz6TlOf6/8YW1Flk5Bd2tMwVA7QgL9NPFh8PktcUmZi7R4yPmqnWI7zgpX4m69cHq0YUcqwklu4wjzQW+KsjiUv5hWDjd5YY7adzJuzFuYoF25I4LiLRCT5YB95BPRrhGRga5g4EPl1SBJT2lguSJ3NiZ3IR8JGogdiPXlZ/E08s8y+ADHVTI3WxFWw4G18EXac4FW/SILrJYCuCmY8QvIj4u7EdfpOKbcu3T6wfB19mFLDtBckwPT6E4fw/xTZxwmuScGvS8AeQCuPh8ypOXNGRN3sAQ72JKguy1Sz43qjxKPj/A==
+procuracao.client.resource.application.public.key.homolog = /br/gov/go/sefaz/pat/admin/portalsefaz-public-key-homolog.der 

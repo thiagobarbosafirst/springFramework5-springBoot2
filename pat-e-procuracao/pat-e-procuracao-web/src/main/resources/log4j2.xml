@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+
+	<Properties>
+		<Property name="log-path">/u01/app/logs/Wls_Domain/${sys:weblogic.Name}</Property>
+		<Property name="app-name">pat-e-procuracao</Property>
+		<!-- Graylog -->
+        <Property name="graylog-host">tcp:logs.intra.goias.gov.br</Property>
+        <Property name="graylog-port">1515</Property>
+	</Properties>
+	
+	<Appenders>
+		<RollingFile name="log" fileName="${log-path}/${app-name}.log" filePattern="${log-path}/${app-name}-%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+				<pattern>%d %-5p %C %m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+		</RollingFile>
+		
+		<RollingFile name="error-log" fileName="${log-path}/${app-name}-error.log" filePattern="${log-path}/${app-name}-error-%d{yyyy-MM-dd}.log">
+			<PatternLayout>
+				<pattern>%d %-5p %C %m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+			</Policies>
+		</RollingFile>
+		
+		<!-- Graylog -->
+        <Gelf name="gelf"
+             host="${graylog-host}"
+             port="${graylog-port}"
+             version="1.1"
+             extractStackTrace="true"
+             filterStackTrace="true"
+             mdcProfiling="true"
+             facility="${logs.graylog.facility}"
+             includeFullMdc="true"
+             additionalFieldTypes="version=String"
+             maximumMessageSize="8192">
+           <Field name="line" pattern="%L"/>
+           <Field name="severity" pattern="%-5p"/>
+           <Field name="simpleClassName" pattern="%c{1}"/>
+           <Field name="method" pattern="%M"/>
+           <Field name="version" literal="${project.version}"/>
+           <Field name="server" pattern="%host"/>
+           <Field name="app" literal="${app-name}"/>
+           <Field name="thread" pattern="%T"/>
+       </Gelf>
+		
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>%d %-5p %C %m%n</pattern>
+			</PatternLayout>
+		</Console>
+	</Appenders>
+	
+	<Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="console" />
+        </Root>
+ 		
+ 		<Logger name="br.gov.go.sefaz.pat.procuracao" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="INFO" />
+            <AppenderRef ref="error-log" level="ERROR" />
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+        <Logger name="br.gov.go.sefaz.javaee" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="INFO" />
+            <AppenderRef ref="error-log" level="ERROR" />
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+ 		
+        <Logger name="br.gov.go.sefaz" additivity="TRUE" level="DEBUG">
+            <AppenderRef ref="log" level="DEBUG"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+ 		<Logger name="org.hibernate" additivity="TRUE" level="INFO">
+ 			<AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+        <Logger name="org.hibernate.SQL" additivity="TRUE" level="DEBUG">
+            <AppenderRef ref="log" level="DEBUG"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+        <Logger name="com.fasterxml.jackson" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="DEBUG"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+ 
+        <Logger name="org.springframework" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+        <Logger name="springfox.documentation" additivity="TRUE" level="WARN">
+            <AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+            <AppenderRef ref="gelf" level="INFO" />
+        </Logger>
+        
+        <Logger name="net.sf.ehcache" additivity="TRUE" level="WARN">
+            <AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+        </Logger>
+        
+        <Logger name="org.dozer" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+        </Logger>
+        
+        <Logger name="org.apache.commons.beanutils" additivity="TRUE" level="INFO">
+            <AppenderRef ref="log" level="INFO"/>
+            <AppenderRef ref="error-log" level="ERROR"/>
+        </Logger>
+    </Loggers>
+		
+</Configuration>

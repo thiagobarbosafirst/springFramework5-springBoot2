@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Procuração</title>
+    <!-- jQuery -->
+	<script th:src="@{/resources/vendors/jquery/dist/jquery.min.js}"></script>
+	
+	<!-- bootstrap-toggle -->
+	<link th:href="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.css}" rel="stylesheet">
+	<!-- bootstrap-daterangepicker -->
+   	<link th:href="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+   	<!-- iCheck -->
+	<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+	<!-- Upload.css -->
+	<link th:href="@{/resources/vendors/upload/upload.css}" rel="stylesheet"> 
+	<!-- Upload.css -->
+	<link th:href="@{/resources/css/procuracao.css}" rel="stylesheet">
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Procuração</h2>
+						<!-- <ul class="nav navbar-right panel_toolbox">sec:authorize="hasAnyRole('BASICO','PORTALSEFAZ_PERFIL_ADMIN')">
+							<li>
+								<a class="btn btn-default btn-xs pull-right" th:href="@{/faseTramitacaoProcessos/form}">
+									<div class="fa fa-plus"> Incluir</div>
+								</a>
+							</li>
+						</ul> -->
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+					
+						<!-- Messages -->
+						<sefazgo:messages/>
+
+						<!-- Content -->
+						<table id="datatable-responsive-list" class="table table-striped table-bordered dt-responsive nowrap jambo_table" cellspacing="0" width="100%">
+							<thead>
+										<tr>
+											<th class="text-center">Detalhes</th>
+											<th>Processo</th>
+											<th>Data da Procuração</th>
+											<th>Tipo Poder</th>
+											<th>Data Validade</th>
+											<th>Modalidade</th>
+											<th>Status Procuração</th>
+											<th class="text-center">Ações Procuração</th>
+											<th>Substabelecer</th> 
+                                    		<th>Renunciar</th>
+										</tr>
+									</thead>
+								<tbody th:each="procuracao : ${listaProcuracao}">
+								<div></div>
+										<tr class="collapse-toggle">
+											<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+											<td th:text="${procuracao.numeroPAT}"></td>
+											<td th:text="${#dates.format(procuracao.dataEmissaoProcuracao, 'dd/MM/yyyy - HH:mm:ss')}"></td>
+											<td th:text="${procuracao.descricaoPoderProcuracao}"></td>
+											<td th:if="${procuracao.dataValidadeProcuracao} != null" th:text="${#dates.format(procuracao.dataValidadeProcuracao, 'dd/MM/yyyy')}"></td>
+											<td align="center" th:if="${procuracao.dataValidadeProcuracao} == null"></td>
+											<td th:if="${procuracao.indiModalidadeAsChar} == 'S'" th:text="Presencial"></td>
+											<td th:if="${procuracao.indiModalidadeAsChar} == 'N'" th:text="Eletrônica"></td>
+											<td th:text="${procuracao.descricaoStatusProcuracao}"></td>								
+										 	<td>
+											 	<div class="text-center">  
+													<div th:if="${!procuracao.statusProcuracao.equals('6')}" class="text-center">
+														<a class="js-btn-modal-download" title="Visualizar Documentos Relacionados" style="font-size:20px; padding-right: 15px;" 
+															th:data-id-referencia="${procuracao.idProcuracao}" 
+															th:data-codigo-modulo="${T(br.gov.go.sefaz.pat.procuracao.constants.TipoAgrupadorMovimentacaoMapper).PROCURACAO}" 
+															th:data-numero-processo="${procuracao.numeroPAT}"> 
+															<i class="fa fa-download" ></i>
+														</a>																					
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="text-center">  								
+													<div th:if="${procuracao.statusProcuracao.equals('1') && procuracao.substabelecimentoValidado}">
+														<a  title="Substabelecer Procuração" th:href="@{/substabelecimento/__${procuracao.idProcuracao}__}" style="font-size:20px; padding-right: 15px;">
+															<i class="fa fa-pencil"></i>
+														</a>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="text-center">  								
+													<div th:if="${procuracao.statusProcuracao.equals('1')}">
+														<a title="Renunciar Procuração" th:href="@{/renuncia/__${procuracao.idProcuracao}__}" style="font-size:20px; padding-right: 15px;">
+															<i class="fa fa-pencil"></i>
+														</a>
+													</div>
+												</div>
+											</td>  
+										
+											<tr class="collapse">
+												<td colspan="10">
+													<div class="x_panel" th:fragment="dados-sujeito-procuracao"> 
+														<div class="x_title">
+															<h2>Sujeitos Passivos (Outorgantes) e Procuradores</h2>
+															<div class="clearfix"></div>
+	
+														</div>
+														<div class="x_content">
+															<table
+																class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo">
+																<thead>
+																	<tr>
+																		<th>Processo</th>
+																		<th>CNPJ/CPF Sujeito Passivo</th>
+																		<th>Sujeito Passivo</th>
+																		<th>Procurador</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="sujeitoPassivo : ${procuracao.movimentacoesDto} ">
+																		<td th:text="${sujeitoPassivo.numeroPAT}"></td>
+																		<div th:if="${sujeitoPassivo.tipoPessoa.equals('J')}">
+																			<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																		</div>
+																		<div th:if="${sujeitoPassivo.tipoPessoa.equals('F')}">
+																			<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																		</div>																																		
+																		<td th:text="${sujeitoPassivo.nomeSujeito}"></td>
+																		<td th:text="${sujeitoPassivo.nomeProcurador}"></td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+	
+													</div>
+												</td>
+											</tr>
+										</tr> 
+							</tbody>
+								
+						</table>
+						<!-- Pagination Bar -->
+						<!-- <sefazgo:pagination page="${page}"/> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal (Delete Confirmation)
+		<div th:replace="@{layout/modal/modal-delete} :: modal"></div> -->
+		<!-- Modal (Modal Upload)-->
+		<div th:replace="@{layout/modal/modal-upload} :: modal"></div>
+		<!-- Modal (Modal Download)-->		
+		<div th:replace="@{layout/components/modal-download} :: modalDownload"></div>
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+	
+ 			<script th:src="@{/resources/js/procuracao.js}"></script>  
+			
+			<!-- Add Procurador -->
+			<script th:src="@{/resources/js/procurador.lista.js}"></script>
+			<!-- Pesquisa Pessoa Física -->
+			<script th:src="@{/resources/js/pessoafisica.pesquisa.js}"></script>
+			
+			<!-- Pesquisa Pessoa Jurídica -->
+			<script th:src="@{/resources/js/pessoajuridica.pesquisa.js}"></script>
+			
+			<!-- Cadastro de procuradores -->
+			<script th:src="@{/resources/js/procurador.cadastro.js}"></script>
+			
+			<!-- jquery.inputmask -->
+	    	<script th:src="@{/resources/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+   			
+	    	<!-- Sefazgo Toggle-->
+	    	<script th:src="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.js}"></script>
+	    	<script th:src="@{/resources/js/sefazgo/toggle/1.0.0/jquery.sefazgo.toggle.js}"></script>
+	    	<!-- Sefazgo InputClear-->
+			<script th:src="@{/resources/js/sefazgo/inputclear/1.0.0/jquery.sefazgo.inputclear.js}"></script>
+	    	
+	    	<!-- iCheck -->
+   			<script th:src="@{/resources/vendors/iCheck/icheck.min.js}"></script> 
+   			
+   			<!-- bootstrap-daterangepicker -->
+	    	<script th:src="@{/resources/vendors/moment/min/moment.min.js}"></script>
+    		<script th:src="@{/resources/vendors/moment/min/locales.min.js}"></script>
+	    		
+	    	<script th:src="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>	    	
+	    	
+   	</th:block>
+
+</body>
+</html>

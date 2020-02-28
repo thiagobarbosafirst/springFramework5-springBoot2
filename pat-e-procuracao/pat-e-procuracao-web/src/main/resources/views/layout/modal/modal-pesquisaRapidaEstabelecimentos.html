@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sefazgo="http://www.sefaz.go.gov.br">
+		
+<body>
+
+	<!-- Modal -->
+	<div class="modal fade bs-example-modal-sm" id="pesquisaRapidaEstabelecimentos" tabindex="-1" role="dialog" aria-hidden="true" th:fragment="pesquisaRapidaEstabelecimentos">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header custom-modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"><i class="fa fa-close"></i></span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel2">Pesquisa de Estabelecimentos</h4> 
+				</div>
+				<div class="modal-body">
+                	<form class="form" th:action="@{/procuracao}" autocomplete="off" > 
+                		<sefazgo:messages/>
+	                    <div class="form-group">
+	                        <label class="control-label" for="nomeEstabelecimentoModal">CNPJ Base</label>
+	                        <input id="nomeEstabelecimentoModal" type="text" class="form-control" autofocus="autofocus"/>
+	                    </div> 
+	
+	                    <button type="submit" class="btn  btn-primary  js-pesquisa-rapida-estabelecimentos-btn">Pesquisar</button>
+	                    <a href="#" class="btn  btn-default" data-dismiss="modal">Cancelar</a>
+                	</form>
+                	
+                	<div id="containerTabelaPesquisaRapidaEstabelecimentos"></div>
+                	
+				</div>
+
+			</div>
+		</div>
+		<!-- HBs Tabela Estabelecimentos -->
+		<th:block th:replace="hbs/tabelaPesquisaRapidaEstabelecimentos"></th:block>
+	</div>
+</body>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+<title>Revogação</title>
+<!-- Datatables -->
+<link th:href="@{/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/resources/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+
+<!-- iCheck -->
+<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+<link th:href="@{/resources/css/procuracao.css}" rel="stylesheet">
+
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<a class="btn btn-dark pull-right" th:href="@{/revogacaoPresencial/search}">
+						<div class="fa fa-search">Voltar a pesquisa</div>
+					</a>
+					<div class="x_title">
+						<h2>Revogação da Procuração</h2>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<ul class="nav nav-tabs bar_tabs">
+								<li class="active"><a href="#first-tab" data-toggle="tab">Documentos</a></li>
+								<li><a href="#second-tab" data-toggle="tab">Sujeitos Passivos e Procuradores</a></li>
+							</ul>
+							<!-- Messages -->
+							<sefazgo:messages />
+							<div class="tab-content col-md-12 col-sm-12 col-xs-12">								
+								<input id="actionUrl" type="hidden" th:value="@{/revogacaoPresencial/save_presencial}">
+								<!-- Primeira Aba -->
+								<div class="nav-tabs bar_tabs tab-pane active in" id="first-tab">
+									<pat:file-upload-list id="upload-file-list-renuncia" />
+								</div>
+								<!-- end Primeira Aba -->
+								<!-- Segunda Aba -->
+								<div class="nav-tabs bar_tabs tab-pane" id="second-tab">									
+									<!-- Mensagem de erro em tela -->
+									<div class="alert alert-danger" id="mensagem-renuncia" style="display: none">
+										<button type="button" class="close" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+										<span class="mensagem-texto"></span>
+									</div>
+									
+									<form id="form-movimentacao-presencial" method="post" class="form-horizontal form-label-left input_mask formProcuracao" novalidate>
+										<input type="hidden" id="id-usuario-procurador" th:value="${idUsuarioProcurador}">
+										<input type="hidden" id="idSujeitoPassivo" th:value="${idSujeitoPassivo}"/>
+										<div class="well" style="overflow: auto">
+											<div class="col-md-12 col-sm-5 col-xs-12 form-group has-feedback">
+												<table class="table table-bordered jambo_table bulk_action table-agrupada-pai table-procuracoes-processo">
+													<thead>
+														<tr>
+															<th class="text-center">Detalhes</th>
+															<th class="text-center">Selecionar</th>
+															<th>Processo</th>
+															<th>Data da Formalização</th>
+														</tr>
+													</thead>
+													<tbody th:each="processo : ${processoByRevogacao}">
+														<tr class="collapse-toggle">
+															
+															<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+															<td class="text-center"><input type="checkbox" class="flat row-processo-renuncia" th:data-id-processo="${processo.idProcesso}"></td>
+															<td th:text="${processo.numeroPAT}"></td>
+															<td th:text="${#dates.format(processo.dataFormalizacao, 'dd/MM/yyyy')}"></td>
+															
+														<tr class="collapse">
+															<td colspan="8">
+																<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+																	
+																	<div class="x_title">
+																		<h2>Sujeitos Passivos (Outorgantes) e Procuradores</h2>
+																		<div class="clearfix"></div>
+																	</div>
+																	
+																	<div class="x_content">
+																		<table class="table table-striped table-bordered jambo_table bulk_action table-sujeitos-processo">
+																			<thead>
+																				<tr>
+																					<th class="text-center">Selecionar</th>
+																					<th>CNPJ/CPF Sujeito Passivo</th>
+																					<th>Sujeito Passivo</th>
+																					<th>CPF Procurador</th>
+																					<th>Procurador</th>
+																					<th>Status</th>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				<tr th:each="sujeitoPassivo : ${processo.movimentacoesDto} ">
+																					<div th:if="${sujeitoPassivo.idRevogacao == null}">																																											
+																						<div th:if="${sujeitoPassivo.idRenuncia == null}">
+																							<td class="text-center">
+																									<input type="checkbox" class="flat procuradores" name="detalhe[]" th:value="${sujeitoPassivo.idMovimentacaoProcuracao}" 
+																										th:data-id-processo="${sujeitoPassivo.idProcesso}">																									
+																							</td>
+																						</div>
+																						<div th:if="${sujeitoPassivo.idRenuncia != null}">
+																							<td class="text-center">
+																								<input type="checkbox" class="flat" name="checked" disabled="disabled" checked>
+																							</td>
+																						</div>		
+																						<div th:if="${#strings.toString(procuracao.pessoaAssinante.tipoPessoa) == 'J'}">
+																							<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																						</div>
+																						<div th:if="${#strings.toString(procuracao.pessoaAssinante.tipoPessoa) == 'F'}">
+																							<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeitoPassivo.cnpjCpf}"></td>
+																						</div>
+																						<div th:with="isPessoaFisica=${#strings.toString(procuracao.pessoaAssinante.tipoPessoa) == 'F'}">
+																							<td th:text="${isPessoaFisica ? sujeitoPassivo.nomeSujeito : sujeitoPassivo.nomeSujeito}"></td>
+																						</div>
+																						<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeitoPassivo.cpfProcurador}"></td>
+																						<td th:text="${sujeitoPassivo.nomeProcurador}"></td>
+																						<td th:text="${sujeitoPassivo.idRenuncia == null} ? 'ATIVO' : 'INATIVO'"></td>
+																					</div>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class="form-group form-group-buttons">
+												<div class="btn-toolbar pull-right clearfix">
+													<button type="button" class="btn btn-orange salvar-movimentacao-presencial">Revogar</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>																								
+								<!--end Segunda Aba -->
+							</div>
+							<!-- end tab-content -->
+						</div>
+						<!-- end col-md -->
+					</div>
+					<!-- end x_content -->
+				</div>
+				<!-- end x_panel -->
+			</div>
+			<!-- end col-md -->
+		</div>
+		<!-- end row -->
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+
+		<script th:src="@{/resources/js/procuracao.js}"></script>
+		<script th:src="@{/resources/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+		<script th:src="@{/resources/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+		<script th:src="@{/resources/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+		<!-- iCheck -->
+		<script th:src="@{/resources/vendors/iCheck/icheck.min.js}"></script>
+		<!-- File Upload -->
+		<script th:src="@{/resources/vendors/bootstrap-filestyle/js/file-upload.js}"></script>
+	</th:block>
+
+</body>
+</html>

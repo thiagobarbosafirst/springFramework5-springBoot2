@@ -1,0 +1,143 @@
+.dark{
+	 background-color: #f9f9f9;
+	 color: #73879C;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+ 
+}
+.white{
+   background-color: white;
+   color: #73879C;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+}
+table.jambo_table_procr {
+    border: 1px solid rgba(221, 221, 221, 0.78)
+}
+table.jambo_table_procr thead {
+    background: rgba(52, 73, 94, 0.94);
+    color: #ECF0F1
+}
+
+.daterangepicker .calendar.single {
+    margin: 0 6px 4px 0 !important;
+}
+
+.btn-consultar-cep-js
+{
+	margin-right:0px !important;
+}
+
+.modal-endereco[id='contentInputsModal']{
+	margin-top: 7px;
+}
+
+.container-cep-endereco{
+	padding-left:0px;
+	padding-right:0px;	
+}
+
+.modal-endereco.modal-body{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.modal-endereco.x_content{
+	padding-left:0px;
+	padding-right:0px;
+}
+
+.modal-endereco.x_panel{
+	margin-bottom: 0px;
+}
+
+#mensagem-carregamento,#mensagem-carregamento-cep{
+	padding:10px;
+	margin-top:15px
+}
+
+.tile_count .tile_stats_count .count{
+	font-size: 1.2em;
+}
+
+.titulo-dados-procurador{
+	margin-left: 10px;	
+}
+
+.tile_count {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.panel-renuncia-procurador {
+   padding: 7px;
+}
+
+.panel-renuncia-procurador .tile_count .tile_stats_count {
+    margin-bottom: 0px;    
+    padding-bottom: 0px;
+}
+
+.panel-renuncia-procurador .tile_count {
+    margin-bottom: 0px;    
+}
+
+.panel-renuncia-procurador .tile_count .tile_stats_count .count {    
+    line-height: 30px;    
+}
+
+.panel-renuncia-procurador-container{
+	margin-top:0px;	
+	margin-bottom: 15px;
+}
+
+.panel .panel-heading { 
+    padding-top: 10px; 
+}
+
+.table-agrupada-pai .collapse.in > td:hover {
+    background: none;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+.table-agrupada-pai .collapse.in td table tbody tr {
+    background: none;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+.table-agrupada-pai .collapse.in td table tbody tr:hover {
+    background: #f9f9f9;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+.form-group-buttons{
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
+
+.modal-custom .modal-header{
+	padding-left: 0px;
+}
+
+.btn-download-documento{
+	font-size:1em;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#renuncia-procurador-query{
+	padding: 0px;
+}
+#renuncia-procurador-query .panel{
+	margin-top: 0px;
+}
+
+.custom-modal-header {
+    padding-left: 0px;
+    padding-right: 0px;
+}

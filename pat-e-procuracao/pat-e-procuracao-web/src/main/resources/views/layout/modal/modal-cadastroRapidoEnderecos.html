@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sefazgo="http://www.sefaz.go.gov.br">
+		
+<body>
+
+	<!-- Modal -->
+	<div class="modal fade bs-example-modal-sm" id="cadastroRapidoEnderecos" tabindex="-1" role="dialog" aria-hidden="true" th:fragment="cadastroRapidoEnderecos">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div class="modal-endereco x_panel">
+							<div class="modal-custom modal-header custom-modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true"><i class="fa fa-close"></i></span>
+								</button>
+								<h4 class="modal-title" id="modal-title">Consultar Endereço</h4>
+							</div>
+							<div class="modal-endereco x_content">
+								<div class="modal-endereco modal-body">
+								
+									<form class="form" autocomplete="off" id="form-endereco-cadastro"> 
+	               					
+		               					<sefazgo:messages/>
+		               					
+		               					<input id="idEnderecoModal" type="hidden" />
+		               					<input id="codgLogradouroModal" type="hidden" />
+										
+		               					<div class="col-md-12 col-sm-12 col-xs-12 has-feedback container-cep-endereco">
+											<label class="control-label" for="cepModal">CEP</label> 
+											<div class="input-group col-md-12 col-sm-12 col-xs-12">
+												<input id="cepModal" type="text" class="form-control inputMask-js cep" maxlength="10" data-inputmask="'mask': '99.999-999'" autofocus="autofocus"/>
+												<span class="input-group-btn">
+					                				<button type="button" title="Pesquisar pelo CEP" class="btn btn-dark btn-consultar-cep-js">
+					                            		<div class="fa fa-search"></div>
+					                            	</button>
+			                					</span>
+			                				</div>
+										</div>
+																				
+										<div class="clearfix"></div>
+										
+										<div class="alert alert-info" id="mensagem-carregamento-cep" style="display:none">
+			               					<div id="mensagem-container">
+			               						<i class="fa fa-spinner fa-spin fa-2x mensagem-icone"></i>
+												<span class="mensagem-icone-texto" id="mensagem-carregamento-cep-texto">Consultando CEP...</span>
+			               					</div> 											
+										</div>
+										
+										<div id="containerTabelaPesquisaRapidaEnderecos"></div>
+										
+										<div id="contentInputsModal" class="hidden well">
+											<input id="cepConsultado" type="hidden">
+											<div class="row">																				
+				               					<div class="col-md-3 col-sm-3 col-xs-3 form-group">
+						                			<label class="control-label" for="tipoLogradouroModal">Tipo Logradouro</label>
+						                			<input id="tipoLogradouroModal" type="text" class="form-control" maxlength="110" required="required" disabled/>
+						                		</div>
+				               					
+					               				<div class="col-md-9 col-sm-9 col-xs-9 form-group">
+													<label class="control-label" for="logradouroModal">Logradouro</label> 
+													<input id="logradouroModal" type="text" class="form-control" maxlength="110" required="required" disabled/> 
+												</div>
+				               					
+				               					<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+													<label class="control-label" for="logradouroModal">Bairro</label> 
+													<input id="bairroLogradouroModal" type="text" class="form-control" maxlength="110" required="required" disabled/> 
+												</div>
+												
+				               					<div class="col-md-2 col-sm-2 col-xs-2 form-group">
+													<label class="control-label" for="numeroModal">Numero</label> 
+													<input id="numeroModal" type="text" class="form-control" maxlength="110" required="required"/> 
+												</div>
+			
+												<div class="col-md-2 col-sm-2 col-xs-2 form-group">
+													<label class="control-label" for="quadraModal">Quadra</label> 
+													<input id="quadraModal" type="text" class="form-control" maxlength="110" required="required"/> 
+												</div>
+												
+												<div class="col-md-2 col-sm-2 col-xs-2 form-group">
+													<label class="control-label" for="loteModal">Lote</label> 
+													<input id="loteModal" type="text" class="form-control" maxlength="110" required="required"/> 
+												</div>
+				               					
+				               					<div class="col-md-6 col-sm-6 col-xs-6 form-group">
+													<label class="control-label" for="complementoModal">Complemento</label> 
+													<input id="complementoModal" type="text" class="form-control" maxlength="110" required="required"/> 
+												</div>
+												
+												<div class="col-md-4 col-sm-4 col-xs-4 form-group">
+						                			<label class="control-label" for="ufModal">UF</label>
+						                			<input id="ufModal" type="text" class="form-control" maxlength="110" required="required" disabled/>
+						                		</div>
+						                		
+						                		<div class="col-md-8 col-sm-8 col-xs-8 form-group">
+						                			<label class="control-label" for="municipioModal">Municipio</label>
+						                			<input id="municipioModal" type="text" class="form-control" maxlength="110" required="required" disabled/>
+						                		</div>
+				               					
+				          						<div class="col-md-12 col-sm-12 col-xs-12 form-group"></div>
+				               					
+				               					<div class="col-md-12 col-sm-12 col-xs-12 form-group">
+												<div class="col-md-12 col-sm-12 col-xs-12 ln_solid"></div>
+													<div class="btn-toolbar pull-right">
+														<button class="btn btn-primary js-cadastro-rapido-enderecos-btn" th:data-action-url="@{/enderecos}">Incluir</button>
+							                    		<a href="#" class="btn  btn-default" data-dismiss="modal">Cancelar</a>
+													</div>
+												</div>
+																							
+											</div>	
+											
+										</div>
+	               					
+	               					</form>
+								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- HBs Tabela Estabelecimentos -->
+		<th:block th:replace="hbs/tabelaPesquisaRapidaEnderecos"></th:block>
+	</div>
+	
+	<th:block layout:fragment="self-page-javascripts">
+	
+		<!-- jquery.inputmask -->
+    	<script th:src="@{/resources/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+    	
+	</th:block>
+</body>

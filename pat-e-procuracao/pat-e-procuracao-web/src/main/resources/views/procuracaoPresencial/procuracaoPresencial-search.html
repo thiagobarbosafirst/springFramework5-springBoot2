@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Lista de Procurações</title>
+	
+	<!-- jQuery -->
+	<script th:src="@{/resources/vendors/jquery/dist/jquery.min.js}"></script>
+	
+	<!-- bootstrap-toggle -->
+	<link th:href="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.css}" rel="stylesheet">
+	<!-- bootstrap-daterangepicker -->
+   	<link th:href="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+   	<!-- iCheck -->
+	<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+	<!-- Upload.css -->
+	<link th:href="@{/resources/vendors/upload/upload.css}" rel="stylesheet"> 
+	<!-- Upload.css -->
+	<link th:href="@{/resources/css/procuracao.css}" rel="stylesheet"> 
+</head>
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="clearfix"></div>
+					<div class="x_title">
+						<div><h2>Nova Procuração Presencial</h2></div>
+						<ul class="nav navbar-right panel_toolbox">
+							<li>
+								<a class="btn btn-default btn-xs pull-right" th:href="@{/procuracaoPresencial/search}">
+									<div class="fa fa-list-ul"> Listar Procurações Presenciais</div> 
+								</a>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="x_content">
+					<!-- Messages -->
+						<sefazgo:messages/>
+						
+						<div class="col-md-12 col-sm-12 col-xs-12">											
+							<div class="tab-content col-md-12 col-sm-12 col-xs-12">	
+								<!-- Primeira Aba -->	
+								<div class="nav-tabs bar_tabs tab-pane active in" id="first-tab">
+									
+									<div class="alert alert-danger" id="container-mensagens" style="display: none">
+			               				<div id="mensagem-container">	
+			               				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>			               						               					
+										  <span class="mensagem-texto"></span>
+			               				</div> 											
+									</div>
+									
+									<!-- Componente de consulta de processo -->
+	  								<div class="col-md-12 col-sm-12 col-xs-12">
+										<h4 style="font-weight:bold">Informe o CPF/CNPJ do Sujeito Passivo</h4>
+										<!-- Options: cpf,cnpj,cnpj_base,num_oab,inscricao_estadual,numero_processo,all -->
+										<pat:process-search action="/procuracaoPresencial/form" options="cpf,cnpj" />
+									</div>		
+								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<th:block layout:fragment="self-page-javascripts">
+   	</th:block>
+</body>
+</html>

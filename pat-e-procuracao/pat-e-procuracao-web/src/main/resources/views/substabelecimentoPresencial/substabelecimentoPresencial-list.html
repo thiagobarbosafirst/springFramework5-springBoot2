@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Substabelecimento Presencial</title>
+	<!-- jQuery -->
+	<script th:src="@{/resources/vendors/jquery/dist/jquery.min.js}"></script>
+	
+	<!-- bootstrap-toggle -->
+	<link th:href="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.css}" rel="stylesheet">
+	<!-- bootstrap-daterangepicker -->
+   	<link th:href="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+   	<!-- iCheck -->
+	<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+	<!-- Upload.css -->
+	<link th:href="@{/resources/vendors/upload/upload.css}" rel="stylesheet"> 
+	<!-- Upload.css -->
+	<link th:href="@{/resources/css/procuracao.css}" rel="stylesheet">
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<h2>Substabelecimento Presencial</h2>						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						
+						<!-- Messages -->
+						<sefazgo:messages/>
+						
+						<div id="procuracao-presencial-query" class="col-md-12 col-sm-12 col-xs-12">							
+						<pat:process-search action="/substabelecimentoPresencial/listSubstabelecimento" options="cpf" />
+						
+						<!-- Retornado quando CPF/CNPJ inexistente -->
+						<div class="well col-md-12 col-sm-12 col-xs-12" th:if="${idPessoa == false}">
+							<i class="fa fa-search fa-3x mensagem-icone"></i> 
+							<div class="mensagem-icone-texto">
+								<h2>Não encontramos registros no nosso banco de dados com esse CPF.</h2>
+							</div>
+						</div>
+						
+						<!-- Retornado quando lista estiver vazia -->
+						<div class="well col-md-12 col-sm-12 col-xs-12" th:if="${listaIsEmpty == false}">
+							<i class="fa fa-search fa-3x mensagem-icone"></i> 
+							<div class="mensagem-icone-texto">
+								<h2>Não encontramos processos no nosso banco de dados para SubEstabelecer.</h2>
+							</div>
+						</div>
+
+						<!-- Content -->
+						<div th:if="${not #lists.isEmpty(listaSubstabelecimento)}">
+							<table id="datatable-responsive-list" class="table table-striped table-bordered dt-responsive nowrap jambo_table" cellspacing="0" width="100%" th:if="${listaSubstabelecimento.size() > 0 && pesquisa.texto != null}">
+										<thead>
+											<tr>
+												<th class="text-center">Detalhes</th>
+												<th>Data do Substabelecimento</th>
+			                                    <th>Permite Substabelecimento</th>
+			                                    <th>Data Validade</th>
+			                                    <th>Data Limite Substabelecimento</th>
+			                                    <th>Status</th>
+			                                    <th class="text-center">Ações Substabelecimento</th>
+											</tr>
+										</thead>
+										<tbody th:each="agrupadorMovimentacao : ${listaSubstabelecimento}">	
+											<tr class="collapse-toggle">
+												<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+												<td th:text="${#dates.format(agrupadorMovimentacao.dataSubstabelecimento, 'dd/MM/yyyy')}"></td>
+												<td th:text="${agrupadorMovimentacao.permiteSubstabelecimento}"></td>
+												<td th:text="${#dates.format(agrupadorMovimentacao.dataValidadeSubstabelecimento, 'dd/MM/yyyy')}"></td>
+												<td th:text="${#dates.format(agrupadorMovimentacao.dataLimiteSubstabelecimento, 'dd/MM/yyyy')}"></td>
+												<td th:text="${agrupadorMovimentacao.descricaoStatusSubstabelecimento}"></td>																																												
+												<td>	
+													<div class="text-center"> 														
+														<div th:if="${agrupadorMovimentacao.statusSubstabelecimento.equals('1')}">   
+															<a class="btn js-pat-btn-popup" title="Assinar Substabelecimento" data-toggle="modal" style="font-size:20px; padding-right: 15px;"
+																th:data-id-procuracao="${agrupadorMovimentacao.idSubstabelecimento}"
+															 	th:data-status-procuracao="${agrupadorMovimentacao.descricaoStatusSubstabelecimento}" 
+																th:data-verification-uri="@{/substabelecimento/verifyStep/}" 
+																th:data-download-uri="@{/substabelecimento/download/}"
+																th:data-upload-uri="@{/substabelecimento/upload/}"
+																data-target="#modalUploadConfirmation" > 
+																<i class="fa fa-pencil"></i> 
+															</a>
+														</div>
+														<div class="text-center" th:if="${agrupadorMovimentacao.statusSubstabelecimento.equals('3')}">
+															<a class="js-btn-modal-download" title="Visualizar Documentos Relacionados gf" style="font-size:20px; padding-right: 15px;" 
+																th:data-id-referencia="${agrupadorMovimentacao.idSubstabelecimento}" 
+																th:data-codigo-modulo="${T(br.gov.go.sefaz.pat.procuracao.constants.TipoAgrupadorMovimentacaoMapper).SUBSTABELECIMENTO}" 
+																th:data-numero-processo="${agrupadorMovimentacao.numeroPAT}"> 
+																<i class="fa fa-download" ></i>
+															</a>																											
+														</div>											
+													</div>	
+												</td>																	
+												<tr class="collapse">		
+													<td colspan="8">										
+														<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+															<div class="x_title">
+																<h2>Sujeitos Passivos (Outorgantes) e Procuradores</h2>
+																<div class="clearfix"></div>
+															</div>
+															<div class="x_content">									
+																<table class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo" >
+																	<thead>
+																		<tr>																	
+																			<th>CNPJ/CPF Sujeito Passivo</th>
+																			<th>Sujeito Passivo</th>																						
+																			<th>Procurador</th>																																												
+																		</tr>
+																	</thead>
+																	<tbody>																	  																						  						
+																		<tr th:each="movimentacao : ${agrupadorMovimentacao.movimentacoesDto} ">																																								  				
+														  					<div th:if="${movimentacao.tipoPessoa.equals('J')}">	
+																				<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${movimentacao.cnpjCpf}"></td>
+																			</div>
+														  					<div th:if="${movimentacao.tipoPessoa.equals('F')}">	
+																				<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${movimentacao.cnpjCpf}"></td>
+																			</div>																						
+														  					<div >	
+																				<td th:text="${movimentacao.nomeSujeito}"></td>
+																			</div>	
+																			<div >	
+																				<td th:text="${movimentacao.nomeProcurador}"></td>
+																			</div>		
+																		</tr>	
+																	</tbody>									
+																</table>
+															</div>
+														</div>
+													</td>	
+												</tr>
+											</tr>	
+										</tbody>
+									</table>
+								</div>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal (Modal Upload)-->
+		<div th:replace="@{layout/modal/modal-upload} :: modal"></div>
+		<!-- Modal (Modal Download)-->		
+		<div th:replace="@{layout/components/modal-download} :: modalDownload"></div>
+			
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+		<script th:src="@{/resources/js/procuracao.js}"></script>	 
+	    <script th:src="@{/resources/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+    	<script th:src="@{/resources/js/pat.upload.js}"></script>
+	    <!-- File Upload -->
+    	<script th:src="@{/resources/vendors/bootstrap-filestyle/js/file-upload.js}"></script>
+    	<!-- Include SmartWizard JavaScript source -->
+    	<script th:src="@{/resources/js/smartwizard/jquery.smartWizard.js}"></script>
+		<!-- Include PATWizard JavaScript source -->
+    	<script th:src="@{/resources/js/pat.procuracao.wizard.js}"></script>
+    	<script th:src="@{/resources/js/smartwizard/jquery.pat.wizard.js}"></script>
+	</th:block>
+
+</body>
+</html>

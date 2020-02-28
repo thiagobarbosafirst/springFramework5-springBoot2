@@ -1,0 +1,202 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.gov.go.sefaz</groupId>
+		<artifactId>pat-e-procuracao</artifactId>
+		<version>1.0.0.RC1-SNAPSHOT</version>
+	</parent>
+	<artifactId>pat-e-procuracao-web</artifactId>
+	<packaging>war</packaging>
+	
+	<name>PAT-e Procuracao [Web]</name>
+	<description>Processo Administrativo Tributário Eletrônico - Procuração [Web]</description>
+	<organization>
+		<name>Secretaria da Fazenda do Estado de Goiás</name>
+		<url>http://www.sefaz.go.gov.br</url>
+	</organization>
+
+	<properties>
+		<!-- Versões dos Frameworks -->		
+		<jasperreports.version>6.3.0</jasperreports.version>
+		<hystrix.metrics.event.stream>1.5.12</hystrix.metrics.event.stream>
+	</properties> 
+
+	<dependencies>
+		<!-- SEFAZ-GO PAT-e -->
+ 		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>pat-e-procuracao-domain</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- SEFAZ-GO PAT-e Commons Web-->
+ 		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>pat-e-commons-web</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>pat-e-commons-security</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- SEFAZ-GO JavaEE Dependencies Corporativo -->
+		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>sefazgo-javaee-web-thymeleaf</artifactId>
+			<version>${br.gov.go.sefaz.javaee.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>sefazgo-javaee-service-rest-client</artifactId>
+			<version>${br.gov.go.sefaz.javaee.version}</version>
+		</dependency>
+		<!-- Sefaz-GO Certificado Digital --> 
+		<dependency>
+		  <groupId>br.gov.go.sefaz</groupId>
+		  <artifactId>sefazgo-javaee-commons-x509</artifactId>
+		  <version>${br.gov.go.sefaz.javaee.version}</version>		  
+		</dependency>		
+		<!-- Hystrix -->
+		<dependency>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-metrics-event-stream</artifactId>
+			<version>${hystrix.metrics.event.stream}</version>
+		</dependency>		
+        <!-- Jasper Reports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+			<exclusions>
+				<exclusion>
+		            <groupId>com.fasterxml.jackson.core</groupId>
+		            <artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+		            <groupId>com.fasterxml.jackson.core</groupId>
+		            <artifactId>jackson-databind</artifactId>
+	            </exclusion>
+		        <exclusion>
+		            <groupId>com.fasterxml.jackson.core</groupId>
+		            <artifactId>jackson-annotations</artifactId>
+		        </exclusion>
+		        <exclusion>
+		        	<groupId>org.springframework</groupId>
+		        	<artifactId>spring-context</artifactId>
+		        </exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>desenv</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<pessoaIdentificacao.service.endpointUrl>${pessoaIdentificacao.service.endpointUrl.desenv}</pessoaIdentificacao.service.endpointUrl>
+				<pessoa.service.endpointUrl>${pessoa.service.endpointUrl.desenv}</pessoa.service.endpointUrl>
+				<pessoaJuridica.service.endpointUrl>${pessoaJuridica.service.endpointUrl.desenv}</pessoaJuridica.service.endpointUrl>	
+				<empresa.service.endpointUrl>${empresa.service.endpointUrl.desenv}</empresa.service.endpointUrl>
+				<resource.application.token.url>${resource.application.token.url.desenv}</resource.application.token.url>
+				<procuracao.client.password>${procuracao.client.password.desenv}</procuracao.client.password>
+				<procuracao.client.resource.application.public.key>${procuracao.client.resource.application.public.key.desenv}</procuracao.client.resource.application.public.key>
+				<type.signature>${type.signature.desenv}</type.signature>
+				<rpc.client.brokerid>${rpc.client.brokerid.desenv}</rpc.client.brokerid>
+				<rpc.client.server>${rpc.client.server.desenv}</rpc.client.server>
+				<rpc.client.lib>${rpc.client.lib.desenv}</rpc.client.lib>
+				<oracle.webcenter.url>${oracle.webcenter.url.desenv}</oracle.webcenter.url>
+				<logs.graylog.facility>${logs.graylog.facility.desenv}</logs.graylog.facility>					
+			</properties>
+		</profile>
+		<profile>
+			<id>homolog</id> 			
+			<properties>
+				<pessoaIdentificacao.service.endpointUrl>${pessoaIdentificacao.service.endpointUrl.homolog}</pessoaIdentificacao.service.endpointUrl>
+				<pessoa.service.endpointUrl>${pessoa.service.endpointUrl.homolog}</pessoa.service.endpointUrl>
+				<pessoaJuridica.service.endpointUrl>${pessoaJuridica.service.endpointUrl.homolog}</pessoaJuridica.service.endpointUrl>	
+				<empresa.service.endpointUrl>${empresa.service.endpointUrl.homolog}</empresa.service.endpointUrl>
+				<resource.application.token.url>${resource.application.token.url.homolog}</resource.application.token.url>
+				<procuracao.client.password>${procuracao.client.password.homolog}</procuracao.client.password>
+				<procuracao.client.resource.application.public.key>${procuracao.client.resource.application.public.key.homolog}</procuracao.client.resource.application.public.key>
+				<type.signature>${type.signature.homolog}</type.signature>
+				<rpc.client.brokerid>${rpc.client.brokerid.homolog}</rpc.client.brokerid>
+				<rpc.client.server>${rpc.client.server.homolog}</rpc.client.server>
+				<rpc.client.lib>${rpc.client.lib.homolog}</rpc.client.lib>	
+				<oracle.webcenter.url>${oracle.webcenter.url.homolog}</oracle.webcenter.url>
+				<logs.graylog.facility>${logs.graylog.facility.homolog}</logs.graylog.facility>		
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<filters>
+			<filter>src/main/filters/procuracao-client.filter</filter>
+			<filter>src/main/filters/signature.filter</filter>
+			<filter>src/main/filters/rpc-client.filter</filter>
+			<filter>src/main/filters/documento-webcenter.filter</filter>
+			<filter>src/main/filters/graylog.filter</filter>
+		</filters>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>					
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory> 
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+					<groupId>com.alexnederlof</groupId>
+					<artifactId>jasperreports-plugin</artifactId>
+					<version>2.0</version>
+					<executions>
+						<execution>
+							<phase>process-sources</phase>
+							<goals>
+							<goal>jasper</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<!-- These are the default configurations: -->
+						<compiler>net.sf.jasperreports.engine.design.JRJdtCompiler</compiler>
+						<sourceDirectory>src/main/webapp/jasper</sourceDirectory>
+						<outputDirectory>src/main/webapp/jasper</outputDirectory>
+						<outputFileExt>.jasper</outputFileExt>
+						<xmlValidation>true</xmlValidation>
+						<verbose>true</verbose>
+						<numberOfThreads>4</numberOfThreads>
+						<failOnMissingSourceDirectory>true</failOnMissingSourceDirectory>
+						<sourceScanner>org.codehaus.plexus.compiler.util.scan.StaleSourceScanner</sourceScanner>
+						<encoding>UTF-8</encoding>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>net.sf.jasperreports</groupId>
+							<artifactId>jasperreports</artifactId>
+							<version>6.1.0</version>
+						</dependency>				
+					</dependencies>
+				</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

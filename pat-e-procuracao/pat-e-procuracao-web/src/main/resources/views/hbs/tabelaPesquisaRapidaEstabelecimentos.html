@@ -1,0 +1,27 @@
+<script id="tabela-pesquisa-rapida-estabelecimento" type="text/x-handlebars-template">
+<div style="margin-top: 15px; max-height: 310px; overflow-y: auto;">
+	<table class="table  table-hover">
+		<thead>
+			<tr>
+				<th>CNPJ</th>
+				<th>Nome</th>
+			</tr>
+		</thead>
+				
+		<tbody>
+			{{#if .}}
+				{{#each .}}
+					<tr style=" cursor: pointer" data-idpessoa="{{idPessoa}}" data-nomefantasia="{{nomeFantasia}}" class="js-estabelecimento-pesquisa-rapida" >
+						<td>{{numeroCnpj}}</td>
+						<td >{{nomeFantasia}}</td>
+ 					</tr>
+				{{/each}}
+			{{else}}
+				<tr>
+					<td colspan="2">Nenhum estabelecimento encontrado</td>    
+				</tr>
+			{{/if}}
+		</tbody>
+	</table>
+</div>
+</script>

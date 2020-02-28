@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Lista de Procurações</title>
+	
+	<!-- jQuery -->
+	<script th:src="@{/resources/vendors/jquery/dist/jquery.min.js}"></script>
+	
+	<!-- bootstrap-toggle -->
+	<link th:href="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.css}" rel="stylesheet">
+	<!-- bootstrap-daterangepicker -->
+   	<link th:href="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.css}" rel="stylesheet">
+   	<!-- iCheck -->
+	<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+	<!-- Upload.css -->
+	<link th:href="@{/resources/vendors/upload/upload.css}" rel="stylesheet"> 
+	<!-- Upload.css -->
+	<link th:href="@{/resources/css/procuracao.css}" rel="stylesheet"> 
+	
+	<link th:href="@{/resources/css/bootstrap-toggle/bootstrap-toggle.min.css}" rel="stylesheet"> 
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+					<div class="clearfix"></div>
+
+					<div class="x_title">
+						<div><h2>Nova Procuração Presencial</h2></div>
+						<ul class="nav navbar-right panel_toolbox">
+							<li>
+								<a class="btn btn-default btn-xs pull-right" th:href="@{/procuracaoPresencial/search}">
+									<div class="fa fa-list-ul"> Listar Procurações Presenciais</div> 
+								</a>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="x_content">
+						
+						<div class="well" th:if="${!procuracaoDto.existeProcesso}">
+							<i class="fa fa-search fa-3x mensagem-icone"></i> 
+							<div class="mensagem-icone-texto">
+								<h3>Não foi encontrado processos disponíveis para emissão de procurações.</h3>
+								<a class="btn-xs btn btn-dark" th:href="@{/../procuracao/procuracaoPresencial/list}"><i class="fa fa-angle-double-right"></i> Visualizar Procurações</a>
+							</div>
+						</div>
+						
+						<div class="well" th:if="${procuracaoDto.existeProcuracaoAtiva}">
+							<i class="fa fa-search fa-3x mensagem-icone"></i> 
+							<div class="mensagem-icone-texto">
+								<h3>Já existe procuração ativa. Para inserir nova procuração, deve-se revogar a anterior.</h3> 
+								<a class="btn-xs btn btn-dark" th:href="@{/../procuracao/procuracaoPresencial/list}"><i class="fa fa-angle-double-right"></i> Visualizar Procurações</a>
+							</div>
+						</div>
+						
+						<div th:if="${procuracaoDto.sujeitoPassivos != null}"> 
+						
+							<!-- INICIO DO FORM -->
+						  	<form id="form-procuracao-presencial" class="form-horizontal form-label-left input_mask formProcuracao" method="post" th:object="${procuracaoDto}" 
+						  			th:action="@{/procuracaoPresencial/save}" 
+						  			th:data-action-pdf="@{/procuracao/minuta}" 
+						  			th:data-action-default="@{/procuracaoPresencial/save}" 
+						  			novalidate>
+						  		
+						  		<sefazgo:messages /> 
+									  
+								<input id="actionUrl" type="hidden" th:value="@{/procuracaoPresencial/save}">
+									  
+							  	<div class="well">
+
+							  		<h2 class="navbar-left panel_toolbox">Outorgante: <td th:text="${procuracaoDto.nomeOutorgante}"></td></h2>
+
+							  		<ul class="nav navbar-right panel_toolbox">
+										<li>
+											<a class="btn btn-danger btn-xs pull-right" th:href="@{/procuracaoPresencial/search}">
+												<div class="fa fa-trash" style="color: white;"> Cancelar Procuração</div> 
+											</a>
+										</li>
+									</ul>
+									<div class="clearfix"></div>
+							  	</div>
+									  
+								<ul class="nav nav-tabs bar_tabs">						
+									<li class="active"><a href="#first-tab" data-toggle="tab">Vincular Procuradores</a></li> 
+									<li ><a href="#second-tab" data-toggle="tab">Apensar Documentos</a></li>
+									<li ><a href="#third-tab" data-toggle="tab">Gerar Procuração</a></li>					
+								</ul>
+								
+								<div class="tab-content col-md-12 col-sm-12 col-xs-12">
+									<!-- INICIO PRIMEIRA ABA -->	
+									<div class="nav-tabs bar_tabs tab-pane active in" id="first-tab">
+
+										<div id="container-mensagens">
+											<div class="alert alert-info" id="mensagem-carregamento" style="display: none">						
+						          				<div id="mensagem-container">
+						          					<i class="fa fa-spinner fa-spin fa-2x mensagem-icone"></i>
+													<span class="mensagem-icone-texto" id="mensagem-carregamento-texto">Consultando...</span>
+						          				</div> 											
+											</div>
+											
+											<div class="alert alert-danger alert-dismissible" id="mensagem-consulta-erro" role="alert" style="display: none">
+												<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						          				<span id="mensagem-consulta-erro-texto">Erro.</span> 											
+											</div>
+											
+											<div class="alert alert-warning alert-dismissible" id="mensagem-consulta-alerta" role="alert" style="display: none">						
+											    <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>					            				
+												<span id="mensagem-consulta-alerta-texto">Pessoa Não encontada.</span> 											
+											</div>
+										</div>
+										
+											<div class="x_panel">
+												<div class="x_title">
+													<h2>Tipo do Procurador</h2>
+													<div class="clearfix"></div>
+												</div>
+												<div class="x_content">
+													<!-- Tipo Procuração -->
+													<div class="col-md-3 col-sm-2 col-xs-12">
+														<label class="control-label" for="tipoProcuradorToggle">Selecione o Tipo do Procurador</label>
+														<div class="clearfix"></div>
+														<input id="tipoProcuradorToggle" type="checkbox" 
+															checked data-toggle="toggle" 
+															data-on="ADVOGADO"
+															data-off="PROCURADOR COM PODERES DE ADMINISTRAÇÃO" 
+															data-onstyle="primary"
+															data-offstyle="info"
+															data-width="400">
+													</div>
+												</div>
+											</div>
+										<div class="nomePessoaContainer">
+											
+											<!-- Tipo do Procurador (UTILIZAR COMBO, CASO HAJA OUTRAS OPÇOES) -->
+											<!-- <div class="col-md-5 col-sm-5 col-xs-5 form-group has-feedback">
+												<label class="control-label" for="tipoProcurador">Tipo do Procurador</label> 
+												<select id="tipoProcurador" class="js-sefazgo-inputclear form-control has-feedback-left" required="required" th:field="*{procurador.tipoMovimentacaoRepresentacao}">
+													<option value="" selected default>Selecione o tipo do Procurador...</option>
+													<option value="A">ADVOGADO</option>
+													<option value="R">REPRESENTANTE LEGAL</option>
+													<option value="P">PROCURADOR COM POPDERES DE ADMINISTRAÇÃO</option>
+												</select> 
+												<span class="fa fa-list-ul form-control-feedback left" aria-hidden="true"></span> 
+												<span class="sefazgo-form-control-clear glyphicon glyphicon-remove form-control-feedback"></span>
+											</div> -->
+											
+											<!-- CONDICIONAL EXIBIÇÃO DA SECTION CASO ADOVGADO/REPRESENTANTE -->
+											<div th:replace="/layout/fragments/procurador-form :: formulario-advogado"></div>
+										</div>
+										
+										<div class="listaProcuradorContainer" id="divListaProcuradorContainer">
+											<!-- List - Lista Procurador Fragment -->
+											<div th:replace="/layout/fragments/procurador-list :: formulario-procurador-list"></div>
+										</div>		
+										<div class="clearfix"></div>
+									</div>
+									<!-- FIM PRIMEIRA ABA -->
+									
+									<!-- INICIO SEGUNDA ABA -->
+									<div class="nav-tabs tab-pane" id="second-tab" >
+										<!-- Componente Upload de Documentos Pessoais -->
+										<pat:file-upload-list id="upload-file-list-procuracao-presencial" class="file-upload-list"/>					
+									</div>
+									<!-- FIM SEGUNDA ABA -->
+	
+									<!-- INICIO TERCEIRA ABA -->
+									<div class="nav-tabs tab-pane" id="third-tab" >
+								
+											
+											<div class="x_panel">
+							                  <div class="x_title">
+							                    <h2>Selecionar Processos</h2>
+							                       <div class="clearfix"></div>
+							                    
+							                   </div>	
+											
+												<div class="well" style="overflow: auto">
+					
+												<input id="id" type="hidden" th:field="*{id}" class="fieldProcuracaoPresencial"/>
+												
+												<input type="hidden" th:field="*{idPessoaAssinante}" class="fieldProcuracaoPresencial"/>
+												<input type="hidden" th:field="*{tipoPessoaOutorgante}" class="fieldProcuracaoPresencial"/>
+												<input type="hidden" th:field="*{idOutorgante}" class="fieldProcuracaoPresencial"/>
+												 
+												<div class="col-md-12 col-sm-5 col-xs-12 form-group has-feedback" >
+												
+												
+										<table class="table table-bordered  jambo_table bulk_action table-agrupada-pai table-procuracoes-processo">
+											<thead>
+												<tr>
+													<th class="text-center">Detalhes</th>
+													<th class="text-center">Selecionar</th>
+													<th>Processo</th>	
+													<th>Data da Formalização</th>
+													<!-- <th>Minuta</th> -->					
+												</tr>
+											</thead>
+											<tbody th:each="sujeitoPassivo, status: *{sujeitoPassivos}">			
+												<tr class="collapse-toggle">																												
+													<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+													<td class="text-center"><input type="checkbox" class="flat row-processo-renuncia"	th:data-id-processo="${sujeitoPassivo.idProcessoAdmEletronico}"></td>										 
+													<td th:text="${sujeitoPassivo.numeroProcesso}"></td>	
+													<td th:text="${#dates.format(sujeitoPassivo.dataFormalizacao, 'dd/MM/yyyy')}"></td>
+													<!-- <td>
+														<button type="submit" class="btn btn-dark btn-report-js" th:data-action-url="@{/procuracao/minuta/__${sujeitoPassivo.idProcessoAdmEletronico}__}" data-action="minuta" th:data-id-processo="${sujeitoPassivo.idProcessoAdmEletronico}">Visualizar Minuta</button>	</td> -->									
+												<tr class="collapse">		
+													<td colspan="8">
+													
+														<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+															<div class="x_title">
+																<h2>Sujeitos Passivos (Outorgantes)</h2>
+																<div class="clearfix"></div>
+															</div>
+															<div class="x_content">
+						
+																<table class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo">
+																	<thead>
+																		<tr>				
+																			<th class="text-center">Selecionar</th>														
+																			<th>CNPJ/CPF</th>
+																			<th>Nome</th>																																												
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr th:each="sp, status2: ${sujeitoPassivo.listaSujeitoPassivo}">
+																			<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].cpfCnpj}" class="fieldProcuracaoPresencial"/> 
+															  				<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].id}" class="fieldProcuracaoPresencial"/>
+															  				<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].idProcessoAdmEletronico}" class="fieldProcuracaoPresencial"/>	
+																			<td class="text-center">														
+																				<input type="checkbox" class="flat" name="sujeitosPassivos[]" th:value="${sp.id}" th:data-id-processo="${sp.idProcessoAdmEletronico}">
+																			</td> 														  			
+																			<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sp.cpfCnpj}" />
+														  					<td th:text="${sp.nomeSujeitoPassivo}" />															
+																		</tr>
+																	</tbody>
+						
+																</table>
+															</div>
+														</div>
+														
+												</tr>
+						
+												</tr>
+											</tbody>
+										</table>
+										
+													
+												</div>							
+										</div>
+										
+										</div>
+										
+										<div class="row" id="formSubstabelecimento">
+							              <div class="col-md-12 col-sm-12 col-xs-12">
+							                <div class="x_panel">
+							                  <div class="x_title">
+							                    <h2>Detalhes da Procuração</h2>
+							                <!--      <ul class="nav navbar-right panel_toolbox">
+							                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							                      </li>
+							                    </ul>
+							                    -->
+							                    <div class="clearfix"></div>
+							                    
+							                    </div>
+								                  <div class="x_content">
+								                  <div class="well" style="overflow: auto">
+																							
+														<div id="divDataValidade" class="col-md-2 col-sm-2 col-xs-12 form-group has-feedback" sefazgo:checkError="dataValidade">
+															<label class="control-label" for="dataNascimento">Data Validade Procuração</label> 
+															<input id="dataValidade" type="text" th:field="*{dataValidade}" class="form-control has-feedback-left js-datepicker js-sefazgo-inputclear"
+																data-inputmask="'mask': '99/99/9999'"
+																aria-describedby="data"> <span class="fa fa-calendar-o form-control-feedback left"
+																aria-hidden="true"></span> <a class="sefazgo-form-control-clear glyphicon glyphicon-remove form-control-feedback"></a>
+														</div>
+														
+														<!-- Tipo Procuração -->
+														<div class="col-md-2 col-sm-2 col-xs-12">
+															<input type="hidden" th:field="*{tipoNaturezaJuridica}" id="tpProcuracao" class="fieldProcuracaoPresencial"/>
+															<label class="control-label">Procuração Pública?</label>
+															<sefazgo:toggle type="SIM_NAO" field="simNao" id="tipoProcuracao"/> 
+														</div>
+														
+														<!-- Substabelecimento -->
+														<div class="col-md-2 col-sm-2 col-xs-12">
+															<input type="hidden" th:field="*{permiteSubstabelecimento}" id="permiteSubst" class="fieldProcuracaoPresencial"/>
+															<label class="control-label">Permite Substabelecimento?</label>
+															<sefazgo:toggle type="SIM_NAO" field="simNao" id="permiteEstabelecimento"/> 
+														</div>
+														
+														<!-- Reserva Poderes -->
+														<div class="col-md-6 col-sm-4 col-xs-12 form-group has-feedback" id="divReservaPoderes" style="display:none">
+															
+															<label class="control-label" >Reserva de Poderes</label>										
+															<select id="reservaPoderes" class="form-control has-feedback-left fieldProcuracaoPresencial" required="required" th:field="*{reservaPoderes}">
+																<option value="" selected="selected">Selecione uma Categoria de Reserva de Poderes</option>
+																<option	th:each="tipoReservaPoderPermitido : ${T(br.gov.go.sefaz.pat.procuracao.enumerator.EnumReservaPoderPermitido).values()}"
+																		th:value="${tipoReservaPoderPermitido.indiReservaPermitido}" th:text="${#strings.capitalizeWords(tipoReservaPoderPermitido.significadoReservaPermitido)}">
+																</option>
+															</select>
+															<span class="fa fa-list-ul form-control-feedback left" aria-hidden="true"></span>																																						
+														</div>											
+														
+														<div id="divDataLimite" class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback" sefazgo:checkError="dataLimite" style="display:none">
+															<label class="control-label" for="data">Data Limite Substabelecimento</label>
+															<input id="data" type="text" th:field="*{dataLimite}" class="form-control has-feedback-left js-datepicker js-sefazgo-inputclear fieldProcuracaoPresencial"
+																aria-describedby="data"> <span class="fa fa-calendar-o form-control-feedback left"
+																aria-hidden="true"></span> <a class="sefazgo-form-control-clear glyphicon glyphicon-remove form-control-feedback"></a>
+														</div>	
+														
+													</div>
+												</div>
+											</div>
+										</div>
+										</div>
+																	
+										<div class="form-group form-group-buttons">
+											<div class="btn-toolbar pull-right clearfix">
+												<button type="button" class="btn btn-orange salvar-procuracao-presencial" th:if="*{id == null}">Gerar Procuração</button>							
+											</div>
+										</div>
+														
+									</div>
+									<!-- FIM TERCEIRA ABA -->
+	
+								</div>
+					
+							</form>
+							<!-- FIM DO FORM -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<th:block th:replace="@{layout/modal/modal-pesquisaRapidaEstabelecimentos} :: pesquisaRapidaEstabelecimentos"></th:block> 
+		<th:block th:replace="@{layout/modal/modal-cadastroRapidoEnderecos} :: cadastroRapidoEnderecos"></th:block>  
+	</section>
+	
+	<th:block layout:fragment="self-page-javascripts">
+		<script th:src="@{/resources/js/procuracao.js}"></script>
+		<script th:src="@{/resources/js/procuracao.presencial.js}"></script>    
+		<!-- Pesquisa Pessoa Física -->
+		<script th:src="@{/resources/js/pessoafisica.pesquisa.js}"></script>
+		<!-- Pesquisa Pessoa Jurídica -->
+		<script th:src="@{/resources/js/pessoajuridica.pesquisa.js}"></script>
+		<!-- Add Procurador -->
+		<script th:src="@{/resources/js/procurador.lista.js}"></script>
+		<!-- Cadastro de procuradores -->
+		<script th:src="@{/resources/js/procurador.cadastro.js}"></script>
+		
+		<!-- Consulta de Endereço por CEP -->
+		<script th:src="@{/resources/js/endereco.cadastro-rapido.js}"></script>
+		<!-- Pesquisa Rapida Estabelecimento -->
+		<script th:src="@{/resources/js/estabelecimento.pesquisa-rapida.js}"></script>
+		
+		<!-- Handlerbars -->
+    	<script th:src="@{/resources/vendors/handlebars/handlebars.min.js}"></script>
+		<!-- jquery.inputmask -->
+    	<script th:src="@{/resources/vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js}"></script>
+		<!-- Sefazgo Toggle-->
+    	<script th:src="@{/resources/vendors/bootstrap-switch/bootstrap-switch.min.js}"></script>
+    	<script th:src="@{/resources/js/sefazgo/toggle/1.0.0/jquery.sefazgo.toggle.js}"></script>
+    	<!-- Sefazgo InputClear-->
+		<script th:src="@{/resources/js/sefazgo/inputclear/1.0.0/jquery.sefazgo.inputclear.js}"></script>
+		<!-- iCheck -->
+		<script th:src="@{/resources/vendors/iCheck/icheck.min.js}"></script> 
+		<!-- bootstrap-daterangepicker -->
+    	<script th:src="@{/resources/vendors/moment/min/moment.min.js}"></script>
+   		<script th:src="@{/resources/vendors/moment/min/locales.min.js}"></script>
+    		
+    	<script th:src="@{/resources/vendors/bootstrap-daterangepicker/daterangepicker.js}"></script>	
+    	
+    	<script th:src="@{/resources/js/bootstrap-toggle/bootstrap-toggle.min.js}"></script>	
+    	
+    	    	
+   	</th:block>
+</body>
+</html>

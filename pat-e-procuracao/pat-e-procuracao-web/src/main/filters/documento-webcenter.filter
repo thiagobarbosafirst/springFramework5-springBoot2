@@ -1,0 +1,7 @@
+#Propriedades de acesso ao webcenter em desenvolvimento
+#oracle.webcenter.url.desenv = idc\://10.6.0.212:4444
+oracle.webcenter.url.desenv = http\://wldesfazwbc02.intra.goias.gov.br:26200/cs/idcplg
+
+#Propriedades de acesso ao webcenter em homologação
+#oracle.webcenter.url.homolog = http\://wlhomfazwbc02.intra.goias.gov.br:16200/cs/idcplg
+oracle.webcenter.url.homolog = idc\://10.6.1.163:4444

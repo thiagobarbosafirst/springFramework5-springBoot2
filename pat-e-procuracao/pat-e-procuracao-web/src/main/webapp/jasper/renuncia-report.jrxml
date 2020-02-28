@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-03-15T17:15:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="procuracao-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0181f6b-721d-480e-9428-c40688b385fd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="header.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="footer.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="logo.sefaz" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="procurador" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="processos" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dataAtual" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="procuradorDocumento" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="titulo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="procuradorEndereco" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="outorgantes" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="80" uuid="2a3b84b4-703d-47a6-b5a7-d90630d7b3dc"/>
+				<subreportParameter name="logo.sefaz">
+					<subreportParameterExpression><![CDATA[$P{logo.sefaz}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo">
+					<subreportParameterExpression><![CDATA[$P{titulo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{header.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="47" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="230">
+			<textField>
+				<reportElement x="2" y="10" width="552" height="180" uuid="70bed200-9eda-4ada-8829-126c74420170"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pelo presente instrumento particular de renúncia, eu " + $P{procurador} + " e na " + $P{procuradorDocumento} +" , com endereço profissional á "   + $P{procuradorEndereco} + ", renuncio aos poderes que me foram concedidos para defender os interesses do(s) outorgante(s) " + $P{outorgantes} +" no(s) Processo(s) Administrativo(s) Tributário(s) nº " + $P{processos} + ". "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="200" width="360" height="21" uuid="9ceacf43-9863-4065-8b71-18fb019141b0"/>
+				<textFieldExpression><![CDATA[$P{dataAtual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="82">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="-1" y="-28" width="553" height="110" uuid="bc6b2b10-aeac-4041-a837-08c413941064"/>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{footer.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

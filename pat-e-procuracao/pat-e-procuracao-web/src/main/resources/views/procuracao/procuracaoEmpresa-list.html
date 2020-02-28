@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Lista de Estabelecimentos</title>
+	<!-- Datatables -->
+    <link th:href="@{/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel"> 
+					<div class="x_title">
+						<h2>Listar Estabelecimentos</h2>						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						
+						<!-- Messages -->
+						<sefazgo:messages/>
+
+						<!-- Content -->									
+						<table id="datatable-responsive-list" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="table-col-id">CNPJ</th>
+									<th>Nome Fantasia</th>
+									<th class="all table-col-buttons"></th><!--  sec:authorize="hasAnyRole('BASICO','PORTALSEFAZ_PERFIL_ADMIN')">-->
+								</tr> 
+							</thead>
+							<tbody>
+									<tr th:each="acaoTramitacaoProcesso : ${page.content}">
+										<td class="table-col-id" th:text="${acaoTramitacaoProcesso.codigoAcaoFormatado}"></td> 
+										<td th:text="${acaoTramitacaoProcesso.descricao}"></td>
+										<td class="table-col-buttons"><!--  sec:authorize="hasAnyRole('BASICO','PORTALSEFAZ_PERFIL_ADMIN')">-->
+											<div class="pull-right">
+												<button type="button" class="btn btn-default btn-xs" th:onclick="|location.href='@{/acaoTramitacaoProcessos/form/}${acaoTramitacaoProcesso.id}'|" title="Edit"><div class="fa fa-pencil"></div></button>												
+											</div>
+										</td>
+									</tr>
+							</tbody>
+						</table>
+						<!-- Pagination Bar -->
+						<sefazgo:pagination page="${page}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal (Delete Confirmation)-->
+			<div th:replace="@{layout/modal/modal-delete} :: modal"></div>
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+		<!-- Datatables -->
+	    <script th:src="@{/resources/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	</th:block>
+
+</body>
+</html>

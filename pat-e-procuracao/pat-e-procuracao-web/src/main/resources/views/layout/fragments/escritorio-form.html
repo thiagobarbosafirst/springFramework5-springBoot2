@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	xmlns:th="http://www.thymeleaf.org">
+<body> 
+	<section th:fragment="formulario-escritorio">			
+			
+		<!--  	<form method="post" th:object="${procuracaoDTO}" 
+			class="form-horizontal form-label-left input_mask" novalidate> -->			
+			
+			<!-- Pessoa Jurídica-->					
+			<div class="col-md-4 col-sm-4 col-xs-4 form-group has-feedback">
+				<input id="idEscritorio" type="hidden" th:field="${procuracaoDto.procurador.idEscritorio}"/>
+				<input id="consulta-pessoa-juridica" type="hidden" th:data-action-url="@{/procurador}"/>
+				<input id="cnpjConsultado" type="hidden" th:value="${cnpjConsultado}" th:if="${cnpjConsultado != null}"/>	
+				
+				<label class="control-label" for="procurador.numeroCnpjEscritorio">CNPJ Escritório Advogado</label>
+				<input id="numeroCnpjEscritorio" type="text" th:field="${procuracaoDto.procurador.numeroCnpjEscritorio}" data-inputmask="'mask': '99.999.999/9999-99'"
+						class="form-control has-feedback-left js-sefazgo-mask numeroCnpj" maxlength="18" required="required"/>
+				<span class="fa fa-building-o form-control-feedback left" aria-hidden="true"></span>
+			</div>
+			
+			<!-- Nome da Pessoa -->
+			<div class="col-md-8 col-sm-8 col-xs-8 form-group has-feedback">
+				<label class="control-label" for="nome">Nome Empresarial</label> 
+				<input id="nomeEmpresarialEscritorio" type="text" th:field="${procuracaoDto.procurador.nomeEmpresarialEscritorio}"
+					class="form-control has-feedback-left" maxlength="110"
+					required="required" th:disabled="${!procuracaoDto.procurador.cadastrarCnpj}"/> 
+					<span class="fa fa-keyboard-o form-control-feedback left" aria-hidden="true"></span>
+			</div>
+			
+			<div class="col-md-7 col-sm-7 col-xs-7 form-group has-feedback">
+				<label class="control-label" for="nome">Nome Fantasia</label> 
+				<input id="nomeFantasiaEscritorio" type="text" th:field="${procuracaoDto.procurador.nomeFantasiaEscritorio}"
+					class="form-control has-feedback-left" maxlength="110"
+					required="required" th:disabled="${!procuracaoDto.procurador.cadastrarCnpj}"/> 
+					<span class="fa fa-keyboard-o form-control-feedback left" aria-hidden="true"></span>
+			</div>
+			
+			<!-- UF Advogado-->
+			<div class="col-md-5 col-sm-5 col-xs-5 form-group has-feedback"	>					
+				 <label
+					class="control-label" for="regimeFiscal">Regime Fiscal</label> <select
+					id="regimeFiscal"
+					class="js-sefazgo-inputclear form-control has-feedback-left"
+					required="required" th:field="${procuracaoDto.procurador.regimeFiscal}" th:disabled="${!procuracaoDto.procurador.cadastrarCnpj}">
+					<option value="" selected default>Selecione o Regime Fiscal...</option>
+					<option th:each="regimeFiscal : ${regimesFiscais}" th:value="${regimeFiscal.valor}"
+						th:text="${regimeFiscal.descricao}" name="regimeFiscal" /> 
+				</select> <span class="fa fa-list-ul form-control-feedback left" 
+					aria-hidden="true"></span> <span
+					class="sefazgo-form-control-clear glyphicon glyphicon-remove form-control-feedback"></span>
+			</div>
+			
+			<!-- Endereço Procurador -->
+			<!-- <div class="col-md-7 col-sm-7 col-xs-7 ">
+				<label class="control-label" for="endereco">Endereço Escritório Advogado: </label> 
+			  	<div class="input-group has-feedback">
+					<input id="idEnderecoEscritorio" type="hidden" th:field="${procuracaoDto.procurador.idEnderecoEscritorio}"/>
+					<input id="codgLogradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.codgLogradouroEscritorio}" /> 
+					<input id="numeroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.numeroEscritorio}" /> 
+					<input id="quadraEscritorio" type="hidden" th:field="${procuracaoDto.procurador.quadraEscritorio}" />
+					<input id="loteEscritorio" type="hidden" th:field="${procuracaoDto.procurador.loteEscritorio}" />
+					<input id="complementoEscritorio" type="hidden" th:field="${procuracaoDto.procurador.complementoEscritorio}" />
+					
+					<input id="cepEscritorio" type="hidden" th:field="${procuracaoDto.procurador.cepEscritorio}" />
+					<input id="tipoLogradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.tipoLogradouroEscritorio}"/>
+					<input id="logradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.nomeLogradouroEscritorio}"/>
+					<input id="bairroLogradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.bairroLogradouroEscritorio}"/>
+					<input id="cidadeLogradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.cidadeLogradouroEscritorio}"/>
+					<input id="ufLogradouroEscritorio" type="hidden" th:field="${procuracaoDto.procurador.ufLogradouroEscritorio}"/>					
+					
+					<input id="enderecoEscritorioFormatado" type="text" th:field="${procuracaoDto.procurador.enderecoEscritorioFormatado}" placeholder="Clique na lupa para incluir/alterar o endereço"
+						class="form-control" readonly="readonly" /> 
+					<span class="input-group-btn">
+						<button id="btn-endereco-escritorio" type="button" class="btn btn-dark btn-consultar-cep-js" title="Cadastro de endereços" data-toggle="modal"
+							data-target="#cadastroRapidoEnderecos" th:data-record-id="${procuracaoDto.nomeOutorgante}" th:disabled="${procuracaoDto.procurador.nomeFantasiaEscritorio == null}">
+							<div class="fa fa-search"></div>
+						</button>
+					</span>   
+					
+                    </div>
+			</div> -->
+						
+	<!--  	</form> --> 
+	</section>	
+	
+</body>

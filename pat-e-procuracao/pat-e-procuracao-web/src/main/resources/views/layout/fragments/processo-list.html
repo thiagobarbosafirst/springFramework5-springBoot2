@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	xmlns:th="http://www.thymeleaf.org">
+<body> 
+	<section th:fragment="formulario-processo-list">			
+	
+			<div class="well" style="overflow: auto">
+			
+			<form method="post" th:object="${procuracaoDTO}" 
+			class="form-horizontal form-label-left input_mask" novalidate th:action="@{/procuracao/report/minuta}">
+					
+			<div class="col-md-12 col-sm-5 col-xs-12 form-group has-feedback" >
+				<table class="table table-bordered dt-responsive nowrap jambo_table_procr" cellspacing="0" width="100%" id="tabelaProcessos">											
+						<thead>
+							<tr>
+								<th>Seleção</th>
+								<th>Processo</th>
+								<th>CNPJ Sujeito Passivo</th>
+							  	<th>Sujeito Passivo</th>
+							  	<th >Minuta</th>  
+							 <!--   	<th style="min-width:120px">Procurações</th> -->
+							</tr>
+						</thead>
+						<tbody>
+<!-- 										<tr th:each="sujeitoPassivo : *{sujeitoPassivos}"> -->
+							<th:block th:each="sujeitoPassivo, status: *{sujeitoPassivos}" >
+							<tr th:if="${sujeitoPassivo != null}" th:class="${sujeitoPassivo.estiloLinha}">
+							
+						<!--	<tr th:each="sujeitoPassivo, status: *{sujeitoPassivos}" >
+						 		
+							<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__]}" th:value="*{sujeitoPassivos[__${status.index}__]}" /> -->
+						 		<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].numeroProcesso}" />
+								<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].cpfCnpj}" />
+								<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].id}" />
+								<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].idProcessoAdmEletronico}" />
+				
+							<!--  	<input type="hidden" th:if="${sujeitoPassivo.pessoaInscricao != null}" th:field="*{sujeitoPassivos[__${status.index}__].pessoaInscricao.pessoaJuridica.numeroCnpj}" />
+								<input type="hidden" th:if="${sujeitoPassivo.pessoa != null}" th:field="*{sujeitoPassivos[__${status.index}__].pessoa.pessoajuridica.nomeFantasia}" />
+								<input type="hidden" th:if="${sujeitoPassivo.pessoaInscricao != null}" th:field="*{sujeitoPassivos[__${status.index}__].pessoaInscricao.pessoaJuridica.nomeFantasia}" />
+							 -->	
+							 	<td th:rowspan="${sujeitoPassivo.qteSujeitoPassivo}" class="table-col-buttons" ><!--  sec:authorize="hasAnyRole('BASICO','PORTALSEFAZ_PERFIL_ADMIN')"> -->
+					  			<input type="checkbox" class="flat" th:value="${sujeitoPassivo.selecaoProcesso}" th:field="*{sujeitoPassivos[__${status.index}__].selecaoProcesso}">
+					  			</td>
+								<td th:text="${sujeitoPassivo.numeroProcesso}" th:rowspan="${sujeitoPassivo.qteSujeitoPassivo}" ></td> 
+					  			
+						<!--		<div>
+									<label>
+										<input type="checkbox" class="flat" th:value="${sujeitoPassivo.selecaoProcesso}" th:field="*{sujeitoPassivos[__${status.index}__].selecaoProcesso}">
+									</label>
+								</div> 
+								</td>
+					  		-->	
+					  		<!--  	<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:with="cnpjSujeitoPassivo = ${sujeitoPassivo.pessoa != null}?${sujeitoPassivo.pessoa.pessoajuridica.numeroCnpj}:${sujeitoPassivo.pessoaInscricao.pessoaJuridica.numeroCnpj}" th:text="${cnpjSujeitoPassivo}" /> -->
+					  		<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeitoPassivo.cpfCnpj}" />
+					  		<td th:text="${sujeitoPassivo.nomeSujeitoPassivo}" />
+					  		<td class="table-col-buttons" th:rowspan="${sujeitoPassivo.qteSujeitoPassivo}">
+					  <!--  			<a th:href="@{/procuracao/report/minuta}" class="btn btn-app" title="Baixar Termo"> 
+									<i class="fa fa-download"></i>Download
+								</a>
+						-->		
+						
+								<div class="pull-right"> 
+								<button type="button" class="btn btn-default btn-xs btn-report-js"
+								title="Report"><div class="fa fa-file-pdf-o" formtarget="_blank"></div> 
+							</button>
+									<a th:href="@{/procuracao/report/minuta/{departmentId}(departmentId=${sujeitoPassivo.id})}" > 
+									<i class="fa fa-file-pdf-o" aria-hidden="true" title="Visualizar Minuta" style="font-size:20px;" ></i>
+									</a>
+								</div> 
+							</td> 
+								
+					  			<tr th:each="sp, status2: ${sujeitoPassivo.listaSujeitoPassivo}"  th:class="${sujeitoPassivo.estiloLinha}"> 
+					  				<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].cpfCnpj}" /> 
+					  				<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].id}" />
+					  				<input type="hidden" th:field="*{sujeitoPassivos[__${status.index}__].listaSujeitoPassivo[__${status2.index}__].idProcessoAdmEletronico}" />
+					  				<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sp.cpfCnpj}" />
+					  				<td th:text="${sp.nomeSujeitoPassivo}" />									  				
+					  			</tr>
+																															
+							</tr>
+							
+							</th:block>																													
+						</tbody>
+				</table>
+				
+			</div>					
+			
+		</form>
+		
+		</div>
+		
+			
+	</section>
+	
+	
+</body>

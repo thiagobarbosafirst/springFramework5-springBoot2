@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sefazgo="http://www.sefaz.go.gov.br"
+	layout:decorate="~{layout/layout-master}">
+<head>
+	<title>Renúncia de Procuração</title>
+	<!-- Datatables -->
+    <link th:href="@{/resources/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css}" rel="stylesheet">
+    
+    <!-- iCheck -->
+	<link th:href="@{/resources/vendors/iCheck/skins/flat/orange.css}" rel="stylesheet">
+	    
+    <link th:href="@{/resources/css/procuracao.css}" rel="stylesheet">
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-12 col-xs-12">
+				<div class="x_panel">
+				
+					<a class="btn btn-dark pull-right" th:href="@{/procuracao/listProcurador}">
+						<div class="fa fa-list-ul" > Listar Procuração</div>
+					</a>
+					
+					<div class="clearfix"></div>
+					
+					<div class="x_title">
+						<h2>Renúncia de Processos da Procuração</h2>						
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+							
+					<!-- Messages -->
+					<sefazgo:messages/>
+					
+					<div class="alert alert-danger mensagem-erro" style="display: none">
+				        <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>			               						               					
+						<span class="mensagem-texto"></span> 											
+					</div>
+										
+					<div class="col-md-12 col-sm-12 col-xs-12" th:if="${page.size() > 0}">
+						<div class="panel panel-default panel-renuncia-procurador-container">							
+							<div class="panel-body panel-renuncia-procurador">
+								<h4 th:text="${nomePessoa}" class="titulo-dados-procurador"></h4>
+								<div class="divider"></div>
+								<div class="row tile_count">
+									<div class="col-md-3 col-sm-4 col-xs-8 tile_stats_count" style="margin-right:15px">
+										<span class="">
+											<i class="fa fa-user"></i> <span th:text="${tipoDocumentoPessoa}"></span>
+										</span>
+										<div class="count js-sefazgo-mask label-item-usuario" data-inputmask="'mask': '999.999.999-99'" th:text="${documentoPessoa}" 
+											 th:if="${tipoDocumentoPessoa == 'CPF'}"></div>
+										<div class="count js-sefazgo-mask" data-inputmask="'mask': '99.999.999/9999-99'" th:text="${documentoPessoa}" 
+											 th:if="${tipoDocumentoPessoa != 'CPF'}"></div>
+									</div>
+									<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+										<span class="count_top"><i class="fa fa-credit-card"></i> Número OAB</span>
+										<div class="count" th:text="${numeroDocumentoOAB}"></div>
+									</div>
+									<div class="col-md-4 col-sm-6 col-xs-12 tile_stats_count">
+											<span class="count_top"><i class="fa fa-map-marker"></i> UF OAB </span>
+											<div class="count" th:text="${ufDocumentoOAB}"></div>
+										</div>
+								    </div>
+							</div>
+						</div>						
+					</div>
+					
+					<div class="well col-md-12 col-sm-12 col-xs-12" th:if="${page.size() <= 0}">
+						<i class="fa fa-search fa-3x mensagem-icone"></i> 
+						<div class="mensagem-icone-texto">
+							<h3>Não há procurações disponíveis para renúncia até o momento.</h3>
+							<a class="btn-xs btn btn-primary" th:href="@{/../procuracao/renuncia/list}">
+								<i class="fa fa-angle-double-right"></i> Visualizar Minhas Renúncias
+							</a>
+						</div>
+					</div>
+																										
+					<form id="formRenuncia" th:action="@{/renuncia/save}" th:data-action-pdf="@{/renuncia/minuta}" th:data-action-default="@{/renuncia/save}"
+						method="post" class="form-horizontal form-label-left input_mask formProcuracao" novalidate>
+												
+						<div class="col-md-12 col-sm-12 col-xs-12 well" th:if="${page.size() > 0}">														
+							<table class="table table-bordered  jambo_table bulk_action table-agrupada-pai table-procuracoes-processo">
+								<thead>
+									<tr>
+										<th class="text-center">Detalhes</th>
+										<th class="text-center">Selecionar</th>
+										<th>Processo</th>
+										<th>Data da Formalização</th>												
+									</tr>
+								</thead>
+								<tbody th:each="processo: ${page}">			
+									<tr class="collapse-toggle">																												
+										<td class="text-center"><a><i class="fa fa-angle-double-down" aria-hidden="true"></i></a></td>
+										<td class="text-center"><input type="checkbox" class="flat row-processo-renuncia"	th:data-id-processo="${processo.idProcesso}"></td>										 
+										<td th:text="${processo.numeroPAT}"></td>
+										<td th:text="${#dates.format(processo.dataFormalizacao, 'dd/MM/yyyy')}"></td>
+									<tr class="collapse">		
+										<td colspan="8">										
+											<div class="x_panel" th:fragment="dados-sujeito-procuracao">
+												<div class="x_title">
+													<h2>Sujeitos Passivos (Outorgantes)</h2>
+													<div class="clearfix"></div>
+												</div>
+												<div class="x_content">
+			
+													<table class="table table-striped table-bordered  jambo_table bulk_action table-sujeitos-processo">
+														<thead>
+															<tr>				
+																<th class="text-center">Selecionar</th>														
+																<th>CNPJ/CPF Sujeito Passivo</th>
+																<th>Nome Sujeito Passivo</th>
+																<th>Tipo Sujeito Passivo</th>																
+																<th>Emissão da Procuração</th>
+																<th>Validade da Procuração</th>
+																<th>Status da Procuração</th>
+																<th>Instrumento de Outorga</th>																													
+															</tr>
+														</thead>
+														<tbody>
+															<tr th:each="sujeito: ${processo.movimentacoesDto}">	
+																<td class="text-center">														
+																	<input type="checkbox" class="flat" name="detalhe[]" th:value="${sujeito.idMovimentacaoProcuracao}" th:data-id-processo="${sujeito.idProcesso}">
+																</td> 		
+																												  			
+																<td class="js-sefazgo-mask" data-mask="99.999.999/9999-99" th:text="${sujeito.cnpjCpf}" th:if="${sujeito.cnpjCpf.length() >= 14}"></td>
+																<td class="js-sefazgo-mask" data-mask="999.999.999-99" th:text="${sujeito.cnpjCpf}" th:if="${sujeito.cnpjCpf.length() < 14}"></td>															
+																
+																<td th:text="${sujeito.nomeSujeito}"></td>
+																
+																<td th:text="${T(br.gov.go.sefaz.pat.enumerator.EnumTipoSujeitoPassivo).parse(sujeito.tipoSujeito).descricao}"></td>																
+																
+																
+																<td th:text="${#dates.format(sujeito.dataEmissaoProcuracao, 'dd/MM/yyyy')}"></td>
+																<td th:text="${#dates.format(sujeito.dataValidadeProcuracao, 'dd/MM/yyyy')}"></td>
+																<td th:text="${sujeito.descricaoStatusProcuracao}"></td>
+																<td>
+																	<div style="text-align: center">
+																		
+																		<a th:href="@{/procuracao/download/__${sujeito.idProcuracao}__}" style="font-size:20px;" 
+																			title="Baixar Instrumento de Outorga" th:if="${sujeito.idSubstabelecimento <= 0}">																		
+																		<i class="fa fa-download" ></i>																		
+																		</a>
+																		
+																		<a th:href="@{/substabelecimento/download/__${sujeito.idSubstabelecimento}__}" style="font-size:20px;" 
+																			title="Baixar Instrumento de Outorga" th:if="${sujeito.idSubstabelecimento > 0}">
+																			<i class="fa fa-download" ></i>																		
+																		</a>
+																	</div>
+																</td>															
+															</tr>
+														</tbody>
+			
+													</table>
+												</div>
+											</div>
+											
+									</tr>
+			
+									</tr>
+								</tbody>
+							</table>							
+							
+							<div>					
+								<div class="btn-toolbar pull-right">	
+									<button type="submit" class="btn btn-dark btn-report-js" >Visualizar Minuta</button>														
+									<button type="submit" class="btn btn-orange">Renunciar Procuração</button>
+								</div>
+							</div>
+						
+						</div>
+							
+
+					</form>												
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<th:block layout:fragment="self-page-javascripts">
+	
+		<script th:src="@{/resources/js/procuracao.js}"></script>	 
+	    <script th:src="@{/resources/vendors/datatables.net/js/jquery.dataTables.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+	    <script th:src="@{/resources/vendors/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+	    
+	    <!-- iCheck -->
+   		<script th:src="@{/resources/vendors/iCheck/icheck.min.js}"></script> 
+   			
+	    <!-- JS Credenciamento -->
+    	<script th:src="@{/resources/js/pat.upload.js}"></script>
+	    <!-- File Upload -->
+    	<script th:src="@{/resources/vendors/bootstrap-filestyle/js/file-upload.js}"></script>
+	</th:block>
+
+</body>
+</html>

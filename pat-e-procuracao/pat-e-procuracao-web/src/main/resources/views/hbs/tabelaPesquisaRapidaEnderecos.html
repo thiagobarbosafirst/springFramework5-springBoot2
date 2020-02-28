@@ -1,0 +1,41 @@
+<script id="tabela-pesquisa-rapida-endereco" type="text/x-handlebars-template">
+<h4>Endere&ccedil;o Encontrado: </h4>
+
+<div style="margin-top: 15px;margin-bottom: 15px;max-height: 150px; overflow-y: auto;border:1px solid #ddd">
+	<table class="table table-hover table-bordered dt-responsive nowrap jambo_table_procr" style="margin-bottom:0px">
+		<thead>
+			<tr>
+				<th>CEP</th>
+				<th>Logradouro</th>
+			</tr>
+		</thead>
+				
+		<tbody>
+			{{#if .}}	
+				{{#each .}}			
+					<tr style=" cursor: pointer"  
+							data-codglogradouro="{{codigo}}" 
+							data-cep="{{cep}}" 
+							data-tipologradouro="{{tipoLogradouro.descricao}}"
+							data-nomelogradouro="{{nomeLogradouro.nome}}"
+							data-uf="{{municipio.uf.codigo}}"
+							data-municipio="{{municipio.nomeMunicipio}}"
+							data-bairro="{{nomeBairro.nome}}"														
+							data-numeroendereco=""
+							data-quadraendereco=""
+							data-loteendereco=""
+							data-complementoendereco="{{complemento}}"										
+							class="js-endereco-pesquisa-rapida" >						
+						<td>{{cep}}</td>
+						<td >{{tipoLogradouro.descricao}} {{nomeLogradouro.nome}}</td>
+ 					</tr>
+				{{/each}}				
+			{{else}}
+				<tr>
+					<td colspan="2">Nenhum endere&ccedil;o encontrado</td>    
+				</tr>
+			{{/if}}
+		</tbody>
+	</table>
+</div>
+</script>

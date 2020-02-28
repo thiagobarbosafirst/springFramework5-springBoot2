@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.gov.go.sefaz</groupId>
+		<artifactId>pat-e-procuracao</artifactId>
+		<version>1.0.0.RC1-SNAPSHOT</version>
+	</parent>
+	<artifactId>pat-e-procuracao-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<name>PAT-e Procuracao [EAR]</name>
+	<description>Processo Administrativo Tributário Eletrônico - Procuração [EAR]</description>
+	<organization>
+		<name>Secretaria da Fazenda do Estado de Goiás</name>
+		<url>http://www.sefaz.go.gov.br</url>
+	</organization>
+	
+	<dependencies>
+		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>pat-e-procuracao-web</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>pat-e-procuracao-ear</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<configuration>
+					<modules>
+						<webModule>
+							<groupId>br.gov.go.sefaz</groupId>
+							<artifactId>pat-e-procuracao-web</artifactId>
+							<contextRoot>${context-web}</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>br.gov.go.sefaz</groupId>
+		<artifactId>pat-e-procuracao</artifactId>
+		<version>1.0.0.RC1-SNAPSHOT</version>
+	</parent>
+	<artifactId>pat-e-procuracao-security</artifactId>
+
+	<name>PAT-e Procuracao [Security]</name>
+	<description>Processo Administrativo Tributário Eletrônico - Procuração [Security]</description>
+	<organization>
+		<name>Secretaria da Fazenda do Estado de Goiás</name>
+		<url>http://www.sefaz.go.gov.br</url>
+	</organization>
+
+	<dependencies>
+		<!-- SEFAZ-GO JavaEE Dependencies -->
+		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>pat-e-procuracao-domain</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>br.gov.go.sefaz</groupId>
+			<artifactId>sefazgo-javaee-security-x509</artifactId>
+			<version>${br.gov.go.sefaz.javaee.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

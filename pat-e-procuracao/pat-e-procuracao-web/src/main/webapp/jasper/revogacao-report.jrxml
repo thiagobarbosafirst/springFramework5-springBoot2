@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2019-05-06T10:40:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="termo-revogacao-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0181f6b-721d-480e-9428-c40688b385fd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="footer.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="logo.sefaz" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="procurador" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="processos" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dataAtual" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="titulo" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="outorgantes" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="header.pat" class="java.lang.Object" isForPrompting="false"/>
+	<parameter name="sujeitopassivosEProcuradores" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="0" y="0" width="554" height="91" uuid="33f3aab9-d14f-4c66-8eb5-38681b40c540"/>
+				<subreportParameter name="logo.sefaz">
+					<subreportParameterExpression><![CDATA[$P{logo.sefaz}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="titulo">
+					<subreportParameterExpression><![CDATA[$P{titulo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{header.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="230">
+			<textField>
+				<reportElement x="1" y="190" width="360" height="31" uuid="9ceacf43-9863-4065-8b71-18fb019141b0"/>
+				<textFieldExpression><![CDATA[$P{dataAtual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="0" width="552" height="190" uuid="dedac5d8-5570-42a6-b3e2-b7e5d84470be"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sujeitopassivosEProcuradores}  + "," +"  para defender os interesses no(s) Processo(s) Administrativo(s) Tributário(s) nº " + $P{processos}  +  ". "]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="82">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement x="1" y="-28" width="553" height="110" uuid="bc6b2b10-aeac-4041-a837-08c413941064"/>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{footer.pat}]]></subreportExpression>
+			</subreport>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

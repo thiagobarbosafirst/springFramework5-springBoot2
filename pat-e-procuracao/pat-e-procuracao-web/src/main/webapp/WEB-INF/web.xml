@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	
+	<display-name>SEFAZ-GO JavaEE Sample Project</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>/dashboard</welcome-file>
+	</welcome-file-list>
+
+	<!-- ========================================================== -->
+    <!-- Páginas de erro -->
+    <!-- ========================================================== -->
+    
+	<!-- Página para o tratamento de erros relacionados a tentativas de acessos não autorizados-->
+	<error-page>
+		<error-code>403</error-code>
+		<location>/auth/denied</location>
+	</error-page>
+	
+	<!-- Página para o tratamento de erros relacionados a recursos não encontrados -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errors/404</location>
+	</error-page>
+	
+	<!-- Página para o tratamento de erros relacionados a métodos não suportados-->
+	<error-page>
+		<error-code>405</error-code>
+		<location>/errors/405</location>
+	</error-page>
+	
+	<!-- Página para o tratamento de erros genéricos -->
+    <error-page>
+      	<error-code>500</error-code>
+       	<location>/errors/500</location>
+    </error-page>
+    
+    <error-page>
+    	<exception-type>org.springframework.security.core.userdetails.UsernameNotFoundException</exception-type>
+    	<location>/auth/login/error</location>
+    </error-page>
+    
+    <!-- ========================================================== -->
+    <!-- Diretivas de segurança -->
+    <!-- ========================================================== -->
+    <login-config>
+		<auth-method>CLIENT-CERT</auth-method>
+	</login-config>
+    
+    <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>sefazgo-javaee-security</web-resource-name>
+			<url-pattern>/WEB-INF/classes/views/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+    
+</web-app>
