@@ -18,7 +18,7 @@
 
 	<properties>
 		<!-- Versões dos Frameworks -->		
-		<jasperreports.version>6.3.0</jasperreports.version>
+		<jasperreports.version>7.0.4</jasperreports.version>
 		<hystrix.metrics.event.stream>1.5.12</hystrix.metrics.event.stream>
 	</properties> 
 
@@ -185,7 +185,7 @@
 						<dependency>
 							<groupId>net.sf.jasperreports</groupId>
 							<artifactId>jasperreports</artifactId>
-							<version>6.1.0</version>
+							<version>7.0.4</version>
 						</dependency>				
 					</dependencies>
 				</plugin>
